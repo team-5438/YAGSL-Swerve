@@ -84,7 +84,7 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
         () -> driver.getRawAxis(2));
 
-    drivebase.setDefaultCommand(!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
+    drivebase.setDefaultCommand(RobotBase.isSimulation() ? driveFieldOrientedDirectAngleSim : driveFieldOrientedAnglularVelocity);
   }
 
   /**
