@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.File;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,33 +20,25 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DriverConstants;
 
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.commands.AlignWithSpeaker;
+
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
-import frc.robot.Constants.DriverConstants;
-import frc.robot.Constants.OperatorConstants;
-
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
   /* initalize swerve with our config */
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
-  /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final JoystickButton alignWithSpeakerButton = new JoystickButton(driver, XboxController.Button.kA.value); 
+
   public RobotContainer() {
-    // The robot's subsystems and commands are defined here...
-    // Configure the trigger bindings
     configureBindings();
 
     /* absolute driving */
@@ -98,11 +91,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
-    new JoystickButton(driver, XboxController.Button.kY.value).onTrue(
-      new InstantCommand(drivebase::zeroGyro));
+    new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
-        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    alignWithSpeakerButton.onTrue(new AlignWithSpeaker(limelightSubsystem, drivebase));
   }
 
   /**
