@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
 
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
@@ -30,8 +31,10 @@ import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
   /* initalize swerve with our config */
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+
+  private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
@@ -94,7 +97,7 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    alignWithSpeakerButton.onTrue(new AlignWithSpeaker(limelightSubsystem, drivebase));
+    alignWithSpeakerButton.onTrue(alignWithSpeaker);
   }
 
   /**
@@ -105,5 +108,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
+  }
+
+  public void printToDashboard() {
+    SmartDashboard.putNumber("tx", limelightSubsystem.tx);
+    SmartDashboard.putNumber("ti", limelightSubsystem.tid);
   }
 }
