@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -22,6 +23,16 @@ import swervelib.parser.PIDFConfig;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class Shooter{
+    public static final int shooterMotorTopID = 0;
+    public static final int shooterMotorBottomID = 0;
+    public static final int ampMotorID = 0;
+    public static final int height = 24; //height of shooter (inches)
+    public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
+    public static final int pivotEncoderID = 0; //TODO: set encoder ID 
+    public static final int pivotMotorID = 0; //TODO: set motor ID
+  }
+
   public static class DriverConstants {
     public static final int id = 0;
     // Joystick Deadband
