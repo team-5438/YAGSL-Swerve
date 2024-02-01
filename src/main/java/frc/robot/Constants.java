@@ -27,10 +27,11 @@ public final class Constants {
     public static final int shooterMotorTopID = 0;
     public static final int shooterMotorBottomID = 0;
     public static final int ampMotorID = 0;
-    public static final int height = 24; //height of shooter (inches)
+    public static final int height = 24;
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
-    public static final int pivotEncoderID = 0; //TODO: set encoder ID 
-    public static final int pivotMotorID = 0; //TODO: set motor ID
+    public static final int pivotEncoderID = 0;
+    public static final int pivotMotorID = 0;
+    public static final double shooterRevSpeed = 1;
   }
 
   public static class DriverConstants {
