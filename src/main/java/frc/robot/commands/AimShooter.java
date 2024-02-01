@@ -5,19 +5,18 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.Conversions;
 
 public class AimShooter extends Command {
-    private ShooterSubsystem shooterSubystem;
-    private LimelightSubsystem limelightSubsystem;
+    private ShooterSubsystem shooterSubsystem;
+    private double distance;
 
-    public AimShooter(ShooterSubsystem _shooterSubsystem, LimelightSubsystem _limelightSubsystem)
+    public AimShooter(ShooterSubsystem _shooterSubsystem, double _distance)
     {
         shooterSubsystem = _shooterSubsystem;
-        limelightSubsystem = _limelightSubsystem;
+        distance = _distance;
     }
     
     @Override
     public void execute()
     {
-        double distance = limelightSubsystem.getSpeakerDistance();
         int heightDif = 78 - Constants.Shooter.height;
         double dif2 = Math.pow(heightDif, 2);
         double e2 = Math.pow(18, 2);
@@ -27,9 +26,9 @@ public class AimShooter extends Command {
         double max = min + v;
         
         double angle = (min + max) / 2;
-        shooterSubystem.speakerMotorPivot.set(
-            shooterSubystem.pivotPIDController.calculate(
-                    shooterSubystem.pivotEncoder.getAbsolutePosition(),
+        shooterSubsystem.speakerMotorPivot.set(
+            shooterSubsystem.pivotPIDController.calculate(
+                    shooterSubsystem.pivotEncoder.getAbsolutePosition(),
                     Conversions.degreesToSparkMax(angle, 0)
                 )
             );  

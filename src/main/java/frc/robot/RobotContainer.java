@@ -19,8 +19,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.commands.AimShooter;
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
@@ -35,14 +36,12 @@ import frc.robot.Constants.OperatorConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  /* initalize swerve with our config */
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-  /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // The robot's subsystems and commands are defined here...
     // Configure the trigger bindings
@@ -98,11 +97,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
-    new JoystickButton(driver, XboxController.Button.kY.value).onTrue(
-      new InstantCommand(drivebase::zeroGyro));
+    new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
+    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new AimShooter(shooterSubsystem, 3));
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
-        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
   }
 
   /**

@@ -24,6 +24,6 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorPivot = new CANSparkMax(0, MotorType.kBrushless);
 
         pivotPIDController = new PIDController(0, 0, 0);
-        pivotEncoder = new DutyCycleEncoder(0); // "Initializes a duty cycle encoder on DIO pins 0" fuck is a DIO pin bro
+        pivotEncoder = new DutyCycleEncoder(0);
     }
 }
