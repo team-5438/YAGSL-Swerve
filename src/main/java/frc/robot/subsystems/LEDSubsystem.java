@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 
 public class LEDSubsystem {
-    public static AddressableLED sponsorStrip1;
+    public static AddressableLED sponsorStrip1 = new AddressableLED(0);
 
-    public LEDSubsystem(int port, int length) {
-        sponsorStrip1 = new AddressableLED(port);
+    public LEDSubsystem(int length) {
         AddressableLEDBuffer sponsorStrip1Buffer = new AddressableLEDBuffer(length);
         sponsorStrip1.setLength(length);
         sponsorStrip1.setData(sponsorStrip1Buffer);
+        sponsorStrip1.start();
     }
 }

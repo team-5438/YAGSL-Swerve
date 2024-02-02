@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
-import frc.robot.subsystems.ShuffleboardSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
@@ -43,7 +42,6 @@ public class RobotContainer {
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
-  ShuffleboardSubsystem shuffle = new ShuffleboardSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -78,8 +76,8 @@ public class RobotContainer {
      * right stick controls the angular velocity of the robot
      */
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND) / shuffle.getEntry(shuffle.speed, Constants.speedDivisor),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND) / shuffle.getEntry(shuffle.speed, Constants.speedDivisor),
+        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
         () -> driver.getRawAxis(4));
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
