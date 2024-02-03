@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -32,7 +33,6 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public void execute() {
-        System.out.println(Math.abs(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? 13.3 : 0)));
         if(Math.abs(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? 13.3 : 0)) < tolerance) {
             aligned = true;
         }

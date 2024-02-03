@@ -7,31 +7,25 @@ package frc.robot;
 import java.io.File;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AimShooter;import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AimShooter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
 
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
 
 import frc.robot.subsystems.SwerveSubsystem;
-
-import frc.robot.Constants.DriverConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AimShooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -48,6 +42,7 @@ public class RobotContainer {
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
+  public final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem);
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
@@ -113,8 +108,9 @@ public class RobotContainer {
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
-    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new AimShooter(shooterSubsystem, 16));
-    new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(aimShooter);
+    new JoystickButton(driver, XboxController.Button.kA.value).onTrue(alignWithSpeaker);
+    new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
   }
 
   /**
