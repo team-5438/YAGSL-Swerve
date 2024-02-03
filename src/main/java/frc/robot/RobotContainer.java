@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.File;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,9 +20,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AimShooter;
+import frc.robot.commands.AimShooter;import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.DriverConstants;
+
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.AlignWithSpeaker;
+
 import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
@@ -38,17 +43,17 @@ import frc.robot.commands.AimShooter;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+
+  private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // The robot's subsystems and commands are defined here...
-    // Configure the trigger bindings
     configureBindings();
 
     /* absolute driving */
@@ -120,5 +125,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
+  }
+
+  public void printToDashboard() {
+    SmartDashboard.putNumber("tx", limelightSubsystem.tx);
+    SmartDashboard.putNumber("ti", limelightSubsystem.tid);
   }
 }

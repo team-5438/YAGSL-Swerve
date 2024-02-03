@@ -58,6 +58,11 @@ public final class Constants {
     public static final double MAX_ACCELERATION = 2; /* TODO: Update for our robot */
   }
 
+  public static final class AprilTags {
+    public static final long SPEAKER_CENTRAL = 3;
+    public static final long SPEAKER_OFFSET = 4;
+  }
+
   public static final class Drivebase {
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds /* TODO: Update for our robot */
