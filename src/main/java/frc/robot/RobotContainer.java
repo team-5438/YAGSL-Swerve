@@ -26,11 +26,15 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AimShooter;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -83,22 +87,28 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
         () -> driver.getRawAxis(2));
 
-    drivebase.setDefaultCommand(RobotBase.isSimulation() ? driveFieldOrientedDirectAngleSim : driveFieldOrientedAnglularVelocity);
+    drivebase.setDefaultCommand(
+        RobotBase.isSimulation() ? driveFieldOrientedDirectAngleSim : driveFieldOrientedAnglularVelocity);
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
-    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new AimShooter(shooterSubsystem, 3));
+    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new AimShooter(shooterSubsystem, 16));
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
   }
 
