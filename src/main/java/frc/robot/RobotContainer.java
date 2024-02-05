@@ -108,7 +108,7 @@ public class RobotContainer {
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
-    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(aimShooter);
+    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> shooterSubsystem.isAutoRunning = !shooterSubsystem.isAutoRunning ));
     new JoystickButton(driver, XboxController.Button.kA.value).onTrue(alignWithSpeaker);
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
   }
