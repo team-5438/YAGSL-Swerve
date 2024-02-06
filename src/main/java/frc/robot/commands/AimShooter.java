@@ -16,6 +16,7 @@ public class AimShooter extends Command {
 
     public AimShooter(ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem)
     {
+        this.addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.limelightSubsystem = limelightSubsystem;
     }
@@ -23,13 +24,7 @@ public class AimShooter extends Command {
     @Override
     public void execute() {
         double distance = limelightSubsystem.speakerDistance;
-        if(shooterSubsystem.isAutoRunning) {
-            System.out.println("In shooter mode");
-        } else {
-            System.out.println("Not is shooter mode");
-        }
-        if(shooterSubsystem.isAutoRunning && distance < 1.75){
-            System.out.println("Tag is in proximity");
+        if(shooterSubsystem.isAutoRunning && distance <= 300.0){
             int heightDif = 78 - Constants.Shooter.height;
             double dif2 = Math.pow(heightDif, 2);
             double e2 = Math.pow(18, 2);
@@ -42,13 +37,15 @@ public class AimShooter extends Command {
 
             double sp = shooterSubsystem.pivotPIDController.calculate(
                 shooterSubsystem.pivotEncoder.getPosition(),
-                angle / 360
+                (angle % 360) / 360
             ) * 10;
             shooterSubsystem.speakerMotorPivot.set(sp); 
+        } else {
+            shooterSubsystem.speakerMotorPivot.set(0);
         }
     }
 
     public boolean isFinished() {
-        return shooterSubsystem.pivotPIDController.atSetpoint();
+        return !shooterSubsystem.isAutoRunning;
     }
 }

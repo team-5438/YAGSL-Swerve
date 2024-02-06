@@ -37,4 +37,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         tab = Shuffleboard.getTab("ShooterSubsystem");
     }
+
+    public void toggleShooterMode() {
+        isAutoRunning = !isAutoRunning;
+        System.out.println(isAutoRunning);
+    }
 }

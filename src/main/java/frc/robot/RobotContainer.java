@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -41,8 +42,8 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
-  private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
-  public final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem);
+  private final Command alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
+  public final Command aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem);
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
@@ -50,25 +51,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
-
-    /* absolute driving */
-    AbsoluteFieldDrive closedAbsoluteDriveAdv = new AbsoluteFieldDrive(drivebase,
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getRightX(), DriverConstants.RIGHT_X_DEADBAND));
-
-    /*
-     * Applies deadbands and inverts controls because joysticks
-     * are back-right positive while robot
-     * controls are front-left positive
-     * left stick controls translation
-     * right stick controls the desired angle NOT angular rotation
-     */
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> driver.getRightY(),
-        () -> driver.getRightY());
 
     /*
      * Applies deadbands and inverts controls because joysticks
@@ -82,13 +64,9 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
         () -> driver.getRawAxis(4));
 
-    Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> driver.getRawAxis(2));
-
     // Switch for driveFieldOrientedDirectAngleSim if thats needed
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    shooterSubsystem.setDefaultCommand(aimShooter);
   }
 
   /**
@@ -108,7 +86,7 @@ public class RobotContainer {
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
-    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> shooterSubsystem.isAutoRunning = !shooterSubsystem.isAutoRunning ));
+    new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
     new JoystickButton(driver, XboxController.Button.kA.value).onTrue(alignWithSpeaker);
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
   }
