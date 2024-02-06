@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-    public boolean isAutoRunning = false; // Controlled by driver
+    public boolean isAutoRunning = false;
 
     public CANSparkMax speakerMotorTop;
     public CANSparkMax speakerMotorBottom;
