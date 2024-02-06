@@ -31,6 +31,11 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
   }
 
+  public static class ClimberConstants {
+    public static final int LClimberID = 0; // TODO: add ID
+    public static final int RClimberID = 0; // TODO: add ID
+  }
+
   public static class OperatorConstants {
     public static final int id = 1;
   }

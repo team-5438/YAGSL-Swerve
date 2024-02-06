@@ -19,8 +19,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
@@ -37,6 +38,9 @@ public class RobotContainer {
 
   /* initalize swerve with our config */
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final ClimberSubsystem climberSubsystem  = new ClimberSubsystem();
+
+  private final ClimbCommand climbCommand = new ClimbCommand(climberSubsystem);
 
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
@@ -103,6 +107,7 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    new JoystickButton(operator, PS4Controller.Button.kSquare.value).onTrue(climbCommand);
   }
 
   /**
