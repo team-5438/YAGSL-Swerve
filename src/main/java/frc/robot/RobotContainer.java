@@ -101,8 +101,10 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(
       new InstantCommand(drivebase::zeroGyro));
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
-        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    // new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
+    //     new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    new JoystickButton(driver, XboxController.Button.kX.value).onTrue(
+      drivebase.getAutonomousCommand("Swerve Path", true));
   }
 
   /**
