@@ -5,11 +5,14 @@
 package frc.robot;
 
 import java.io.File;
+import java.sql.PseudoColumnUsage;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
@@ -45,6 +48,7 @@ public class RobotContainer {
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
+  double pov;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -107,7 +111,7 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    new JoystickButton(operator, PS4Controller.Button.kSquare.value).onTrue(climbCommand);
+    new JoystickButton(operator, operator.getPOV()).onTrue(climbCommand.climb(operator.getPOV(), climberSubsystem));
   }
 
   /**
