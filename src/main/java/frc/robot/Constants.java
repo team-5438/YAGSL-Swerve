@@ -35,11 +35,13 @@ public final class Constants {
     public static final int pivotMotorID = 11;
     public static final double shooterRevSpeed = 1;
     public static final double shooterModeMinDistance = 2.25;
+    public static final double topPivotClamp = 0.25;
+    public static final double bottomPivotClamp = 0;
+    public static final double manualPivotSpeedClamp = 0.2;
   }
 
   public static class DriverConstants {
     public static final int id = 0;
-    // Joystick Deadband
     public static final double LEFT_X_DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
@@ -48,6 +50,7 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int id = 1;
+    public static final double RIGHT_Y_DEADBAND = 0.1;
   }
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound /* TODO: Update for our robot */

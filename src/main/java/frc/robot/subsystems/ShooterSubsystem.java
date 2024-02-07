@@ -19,7 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public CANSparkMax speakerMotorPivot;
     public SparkAbsoluteEncoder pivotEncoder;
-    public PIDController pivotPIDController;
+    public PIDController pivotPIDControllerAuto;
+    public PIDController pivotPIDControllerManual;
 
     public ShuffleboardTab tab;
 
@@ -30,9 +31,11 @@ public class ShooterSubsystem extends SubsystemBase {
         // MotorType.kBrushless);
         speakerMotorPivot = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
 
-        pivotPIDController = new PIDController(0.1, 0, 0);
-        pivotPIDController.enableContinuousInput(0, 1);
-        pivotPIDController.setTolerance(0.01);
+        pivotPIDControllerAuto = new PIDController(0.1, 0, 0);
+        pivotPIDControllerAuto.enableContinuousInput(0, 1);
+
+        pivotPIDControllerManual = new PIDController(0.1, 0, 0);
+
         pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
 
         tab = Shuffleboard.getTab("ShooterSubsystem");

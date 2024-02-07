@@ -1,24 +1,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utils.Conversions;
 
 public class AimShooter extends Command {
     public ShooterSubsystem shooterSubsystem;
     public LimelightSubsystem limelightSubsystem;
+    public PS4Controller operator;
 
-    public AimShooter(ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem)
+    public AimShooter(ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem, PS4Controller operator)
     {
         this.addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.limelightSubsystem = limelightSubsystem;
+        this.operator = operator;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class AimShooter extends Command {
         double distance = limelightSubsystem.speakerDistance;
         
         // Only Aim shooter and rev shooter if in
-        if(shooterSubsystem.isAutoRunning && distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+        if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
 
             // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
             int heightDif = 78 - Constants.Shooter.height;
@@ -39,18 +39,34 @@ public class AimShooter extends Command {
             
             double angle = (min*1.2 + max) / 2;
 
-            double sp = shooterSubsystem.pivotPIDController.calculate(
+            double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
                 shooterSubsystem.pivotEncoder.getPosition(),
                 (angle % 360) / 360
-            ) * 10;
+            );
             shooterSubsystem.speakerMotorPivot.set(sp); 
             shooterSubsystem.speakerMotorTop.set(0.1);
             shooterSubsystem.speakerMotorBottom.set(-0.1);
         } else {
-            // ENSURE TO CHANGE THESE STATEMENTS BEFORE IMPLEMENTING MANUAL CONTROLS
-            shooterSubsystem.speakerMotorPivot.set(0);
-            shooterSubsystem.speakerMotorTop.set(0.1);
-            shooterSubsystem.speakerMotorBottom.set(-0.1);
+            // Handle all manual control for aiming the shooter 
+            double shooterSpeed = operator.getRightY();
+            double sp;
+
+            // Use PID to get move the shooter while HOPEFULLY slowing when reaching the top and bottom clamps
+            if(shooterSpeed < -Constants.OperatorConstants.RIGHT_Y_DEADBAND) {
+                sp = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getPosition(), Constants.Shooter.topPivotClamp);
+            } else if (shooterSpeed > Constants.OperatorConstants.RIGHT_Y_DEADBAND) {
+                sp = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getPosition(), Constants.Shooter.bottomPivotClamp);
+            } else {
+                sp = 0;
+            }
+            sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
+
+            shooterSubsystem.speakerMotorPivot.set(sp); 
+
+            if(operator.getTriangleButton()) {
+                shooterSubsystem.speakerMotorTop.set(0.1);
+                shooterSubsystem.speakerMotorBottom.set(-0.1);
+            }
         }
     }
 
