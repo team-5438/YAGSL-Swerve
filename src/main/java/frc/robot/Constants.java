@@ -26,7 +26,9 @@ public final class Constants {
   public static class Shooter {
     public static final int shooterMotorTopID = 63;
     public static final int shooterMotorBottomID = 62;
-    public static final int ampMotorID = 0;
+    public static final int ampMotorID = 0; // TODO: add ID
+    public static final int ampRotationMotorID = 0; // TODO: add ID
+    public static final int ampFeedMotorID = 0; // TODO: add ID
     public static final int height = 24;
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotEncoderID = 11;

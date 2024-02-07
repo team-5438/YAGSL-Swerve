@@ -22,10 +22,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
 
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.AmpShooterSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
-
+import frc.robot.commands.AmpShoot;
+import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -41,9 +43,12 @@ public class RobotContainer {
   public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  public final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
 
   private final Command alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   public final Command aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem);
+  public final AmpShoot shootAmp = new AmpShoot(ampShooterSubsystem, 120);
+  public final RevShooterWheels revWheels = new RevShooterWheels(shooterSubsystem);
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
@@ -88,6 +93,8 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
     new JoystickButton(driver, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
     new JoystickButton(driver, XboxController.Button.kA.value).onTrue(alignWithSpeaker);
+    new JoystickButton(driver, XboxController.Button.kLeftBumper.value).onTrue(shootAmp);
+    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).onTrue(revWheels);
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
   }
 
