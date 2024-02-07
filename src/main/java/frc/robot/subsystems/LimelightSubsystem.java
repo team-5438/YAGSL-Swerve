@@ -25,7 +25,7 @@ public class LimelightSubsystem extends SubsystemBase {
         speakerDistance = Math.sqrt(
             Math.pow(cameraPoseTargetSpace[0], 2) +
             Math.pow(cameraPoseTargetSpace[2], 2)
-        ) * 64;
+        ) * 39.37;
         SmartDashboard.putNumber("speakerDistance", speakerDistance);
         SmartDashboard.putNumber("x", cameraPoseTargetSpace[0]);
         SmartDashboard.putNumber("z", cameraPoseTargetSpace[2]);

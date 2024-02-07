@@ -32,6 +32,7 @@ public final class Constants {
     public static final int pivotEncoderID = 11;
     public static final int pivotMotorID = 11;
     public static final double shooterRevSpeed = 1;
+    public static final double shooterModeMinDistance = 2.25;
   }
 
   public static class DriverConstants {

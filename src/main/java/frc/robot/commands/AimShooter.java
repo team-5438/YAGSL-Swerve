@@ -24,7 +24,11 @@ public class AimShooter extends Command {
     @Override
     public void execute() {
         double distance = limelightSubsystem.speakerDistance;
-        if(shooterSubsystem.isAutoRunning && distance <= 300.0){
+        
+        // Only Aim shooter and rev shooter if in
+        if(shooterSubsystem.isAutoRunning && distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+
+            // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
             int heightDif = 78 - Constants.Shooter.height;
             double dif2 = Math.pow(heightDif, 2);
             double e2 = Math.pow(18, 2);
@@ -40,8 +44,13 @@ public class AimShooter extends Command {
                 (angle % 360) / 360
             ) * 10;
             shooterSubsystem.speakerMotorPivot.set(sp); 
+            shooterSubsystem.speakerMotorTop.set(0.1);
+            shooterSubsystem.speakerMotorBottom.set(-0.1);
         } else {
+            // ENSURE TO CHANGE THESE STATEMENTS BEFORE IMPLEMENTING MANUAL CONTROLS
             shooterSubsystem.speakerMotorPivot.set(0);
+            shooterSubsystem.speakerMotorTop.set(0.1);
+            shooterSubsystem.speakerMotorBottom.set(-0.1);
         }
     }
 
