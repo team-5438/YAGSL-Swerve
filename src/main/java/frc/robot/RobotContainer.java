@@ -40,15 +40,14 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
+  // private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
-  private final AmpShoot shootAmp = new AmpShoot(ampShooterSubsystem, 120);
-  private final RevShooterWheels revWheels = new RevShooterWheels(shooterSubsystem);
+  // private final AmpShoot shootAmp = new AmpShoot(ampShooterSubsystem, 120);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -92,8 +91,7 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
-    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).onTrue(revWheels);
-    new JoystickButton(operator, PS4Controller.Button.kL1.value).onTrue(shootAmp);
+    // new JoystickButton(operator, PS4Controller.Button.kL1.value).onTrue(shootAmp);
   }
 
   /**

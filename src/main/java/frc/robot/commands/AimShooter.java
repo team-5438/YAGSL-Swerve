@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -26,46 +27,50 @@ public class AimShooter extends Command {
         double distance = limelightSubsystem.speakerDistance;
         
         // Only Aim shooter and rev shooter if in
-        if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+        if(shooterSubsystem.isAutoRunning ) {
+            if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+                // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
+                int heightDif = 78 - Constants.Shooter.height;
+                double dif2 = Math.pow(heightDif, 2);
+                double e2 = Math.pow(18, 2);
+                double fesf2 = Math.pow(4.875, 2);
+                double v = (180/Math.PI)*Math.asin(Math.sin(Math.atan(heightDif/distance)+Math.atan(4.875/18)))*(Math.sqrt((fesf2)+(e2)))/(Math.sqrt((fesf2)+(e2)+(distance*distance)+(dif2)-2*(Math.sqrt((fesf2)+(e2))*(Math.sqrt((distance*distance)+(dif2))))));
+                double min = (180/Math.PI)*Math.atan(heightDif/distance);
+                double max = min + v;
+                
+                double angle = (min*1.2 + max) / 2;
 
-            // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
-            int heightDif = 78 - Constants.Shooter.height;
-            double dif2 = Math.pow(heightDif, 2);
-            double e2 = Math.pow(18, 2);
-            double fesf2 = Math.pow(4.875, 2);
-            double v = (180/Math.PI)*Math.asin(Math.sin(Math.atan(heightDif/distance)+Math.atan(4.875/18)))*(Math.sqrt((fesf2)+(e2)))/(Math.sqrt((fesf2)+(e2)+(distance*distance)+(dif2)-2*(Math.sqrt((fesf2)+(e2))*(Math.sqrt((distance*distance)+(dif2))))));
-            double min = (180/Math.PI)*Math.atan(heightDif/distance);
-            double max = min + v;
-            
-            double angle = (min*1.2 + max) / 2;
-
-            double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
-                shooterSubsystem.pivotEncoder.getPosition(),
-                (angle % 360) / 360
-            );
-            shooterSubsystem.speakerMotorPivot.set(sp); 
-            shooterSubsystem.speakerMotorTop.set(0.1);
-            shooterSubsystem.speakerMotorBottom.set(-0.1);
+                double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
+                    shooterSubsystem.pivotEncoder.getPosition(),
+                    (angle % 360) / 360
+                );
+                shooterSubsystem.speakerMotorPivot.set(sp); 
+                shooterSubsystem.speakerMotorTop.set(0.1);
+                shooterSubsystem.speakerMotorBottom.set(-0.1);
+            }
         } else {
             // Handle all manual control for aiming the shooter 
             double shooterSpeed = operator.getRightY();
             double sp;
+            SmartDashboard.putNumber("Shooter stick", shooterSpeed);
 
             // Use PID to get move the shooter while HOPEFULLY slowing when reaching the top and bottom clamps
             if(shooterSpeed < -Constants.OperatorConstants.RIGHT_Y_DEADBAND) {
-                sp = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getPosition(), Constants.Shooter.topPivotClamp);
+                sp = 0.1;
             } else if (shooterSpeed > Constants.OperatorConstants.RIGHT_Y_DEADBAND) {
-                sp = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getPosition(), Constants.Shooter.bottomPivotClamp);
+                sp = -0.1;
             } else {
                 sp = 0;
             }
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
+            SmartDashboard.putNumber("Speed", sp);
+            SmartDashboard.putNumber("Pivot Encoder", shooterSubsystem.pivotEncoder.getPosition());
 
             shooterSubsystem.speakerMotorPivot.set(sp); 
 
             if(operator.getTriangleButton()) {
-                shooterSubsystem.speakerMotorTop.set(0.1);
-                shooterSubsystem.speakerMotorBottom.set(-0.1);
+                shooterSubsystem.speakerMotorTop.set(0.01);
+                // shooterSubsystem.speakerMotorBottom.set(-0.1);
             }
         }
     }

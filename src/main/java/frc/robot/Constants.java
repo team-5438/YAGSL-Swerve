@@ -24,7 +24,7 @@ import swervelib.parser.PIDFConfig;
  */
 public final class Constants {
   public static class Shooter {
-    public static final int shooterMotorTopID = 63;
+    public static final int shooterMotorTopID = 12;
     public static final int shooterMotorBottomID = 62;
     public static final int ampMotorID = 0; // TODO: add ID
     public static final int ampRotationMotorID = 0; // TODO: add ID
