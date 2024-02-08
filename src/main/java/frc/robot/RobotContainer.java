@@ -104,7 +104,7 @@ public class RobotContainer {
     // new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
     //     new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(
-      drivebase.getAutonomousCommand("Swerve Path", true));
+      drivebase.getAutonomousCommand("Octagon Path", true));
   }
 
   /**
