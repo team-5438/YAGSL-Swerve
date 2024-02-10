@@ -33,9 +33,6 @@ public class ShooterSubsystem extends SubsystemBase {
         pivotPIDControllerAuto = new PIDController(0.1, 0, 0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
-        pivotPIDControllerManual = new PIDController(0.1, 0, 0);
-        pivotPIDControllerManual.enableContinuousInput(0, 1);
-
         pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
         pivotEncoder.setZeroOffset(0.078);
 

@@ -59,22 +59,16 @@ public class AimShooter extends Command {
             }
         } else {
 			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
-            double shooterSpeed = operator.getRightY();
-            double sp = 0;
+            double sp = MathUtil.applyDeadband(-operator.getRightY(), Constants.OperatorConstants.RIGHT_Y_DEADBAND);
 
-			if(shooterSpeed > Constants.OperatorConstants.RIGHT_Y_DEADBAND) {
-				// Use PID to pick a speed towards 0.25 (90 degrees) or 0 (0 and 360 degrees) based on controller input
-				shooterSubsystem.pivotPIDControllerManual.calculate(
-					shooterSubsystem.pivotEncoder.getPosition(),
-					shooterSpeed > 0 ? 0.25 : 0
-				);
-			}
+            // stop the shooter from going into the ground
+            if (sp > 0)
+                sp = Math.abs((shooterSubsystem.pivotEncoder.getPosition() - 0.257) * sp);
+            else if (sp < 0)
+                sp = shooterSubsystem.pivotEncoder.getPosition() * sp;
 
-			// Safety first <3
+			// Safety first <3 (speed clamp)
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
-
-            SmartDashboard.putNumber("Speed", sp);
-            SmartDashboard.putNumber("Pivot Encoder", shooterSubsystem.pivotEncoder.getPosition());
 
             shooterSubsystem.speakerMotorPivot.set(sp); 
 
