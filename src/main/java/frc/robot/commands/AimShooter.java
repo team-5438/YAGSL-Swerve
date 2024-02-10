@@ -65,7 +65,8 @@ public class AimShooter extends Command {
             if (sp > 0)
                 sp = Math.abs((shooterSubsystem.pivotEncoder.getPosition() - 0.257) * sp);
             else if (sp < 0)
-                sp = shooterSubsystem.pivotEncoder.getPosition() * sp;
+                sp = (shooterSubsystem.pivotEncoder.getPosition() > 0.9 ? 0 : shooterSubsystem.pivotEncoder.getPosition())
+                    * sp;
 
 			// Safety first <3 (speed clamp)
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
