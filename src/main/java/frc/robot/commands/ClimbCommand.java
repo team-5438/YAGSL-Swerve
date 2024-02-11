@@ -5,12 +5,16 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimbCommand extends Command {
     public ClimberSubsystem climberSubsystem;
+    private int foo;
 
-    public ClimbCommand(ClimberSubsystem climberSubsystem) {
+    public ClimbCommand(ClimberSubsystem climberSubsystem, int foo) {
+
         this.climberSubsystem = climberSubsystem;
+        this.foo = foo;
+
     } 
 
-    public Command climb(int foo, ClimberSubsystem climberSubsystem) {
+    public static void climb(int foo, ClimberSubsystem climberSubsystem) {
         switch (foo) {
             case 0:
                 climberSubsystem.RClimber.set(-1);
@@ -25,9 +29,9 @@ public class ClimbCommand extends Command {
                 climberSubsystem.LClimber.set(1);
                 break;
         }
-        return null;
     }
     @Override
     public void execute() {
+        climb(foo, climberSubsystem);
     }
 }

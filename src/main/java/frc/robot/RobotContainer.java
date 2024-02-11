@@ -43,8 +43,6 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ClimberSubsystem climberSubsystem  = new ClimberSubsystem();
 
-  private final ClimbCommand climbCommand = new ClimbCommand(climberSubsystem);
-
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
@@ -111,7 +109,7 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    new JoystickButton(operator, operator.getPOV()).onTrue(climbCommand.climb(operator.getPOV(), climberSubsystem));
+    new JoystickButton(operator, operator.getPOV()).onTrue(new ClimbCommand(climberSubsystem, operator.getPOV()));
   }
 
   /**
