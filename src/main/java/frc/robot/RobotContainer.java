@@ -45,7 +45,6 @@ public class RobotContainer {
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
   private final LEDCommand ledCommand = new LEDCommand();
-  int[][] colors = {{255, 0, 0, 1000}, {66, 245, 144, 2000}, {245, 27, 208, 3000}};
   double pov;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -109,8 +108,6 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    // test button
-    new JoystickButton(operator, PS4Controller.Button.kSquare.value).onTrue(new InstantCommand(() -> ledCommand.flashLeds(colors)));
   }
 
   /**

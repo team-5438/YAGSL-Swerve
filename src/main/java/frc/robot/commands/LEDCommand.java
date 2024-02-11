@@ -1,14 +1,8 @@
 package frc.robot.commands;
-import frc.robot.Main;
 import frc.robot.subsystems.*;
 
-import java.lang.reflect.Array;
-import java.util.*;
-
 import java.lang.Thread;
-import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.util.Color;
 
 
 public class LEDCommand implements Runnable {
@@ -25,31 +19,27 @@ public class LEDCommand implements Runnable {
 
     public void flashLeds(int ar[][]) {
         this.ar = ar;
-        if (t == null) {
-            t = new Thread(this, "LED Thread");
-            t.start();
-        }
+        t = new Thread(this, "LED Thread");
+        t.start();
     }
 
     @Override
-    public void run()
-    {
-      try {
+    public void run() {
         int r = 0;
         int b = 0;
         int g = 0;
         int time = 0;
-        for (int i = 0; i < ar.length; i++) {
-            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(12, r, g, b));
-            Thread.sleep(time);
+        for (int i = 0; i <= ar.length; i++) {
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {}
             for (int e = 0; e < 4; e++) {
                 r = ar[i][0];
                 g = ar[i][1];
                 b = ar[i][2];
                 time = ar[i][3];
             }            
+            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, r, g, b));
         }
-      } catch (InterruptedException e) {}
-      System.out.println("oopsy daisy");
     }
 }
