@@ -23,11 +23,12 @@ public class AimShooter extends Command {
     @Override
     public void execute() {
         double distance = limelightSubsystem.speakerDistance;
+        SmartDashboard.putNumber("LL Dist", distance);
         
         // Only Aim shooter and rev shooter if in
-        if(shooterSubsystem.isAutoRunning) {
+        if (shooterSubsystem.isAutoRunning && distance > 0) {
 			// AUTOMATIC / IN SHOOTER MODE logic or aiming the shooter
-            if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+            // if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
 				
                 // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
                 int heightDif = 78 - Constants.Shooter.height;
@@ -41,13 +42,16 @@ public class AimShooter extends Command {
                 double max = min + v;
 				
 				// Get the average of the two, favoring the top cuz grabiby
-                double angle = (min*1.2 + max) / 2;
+                double angle = (min * 1.2 + max) / 2;
 
                 double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
-                    shooterSubsystem.pivotEncoder.getPosition(),
-                    (angle % 360) / 360
-                );
-                shooterSubsystem.speakerMotorPivot.set(sp); 
+                    shooterSubsystem.pivotEncoder.getPosition(), angle / 360);
+
+                SmartDashboard.putNumber("Target Angle", (angle / 360));
+                SmartDashboard.putNumber("Current Angle", shooterSubsystem.pivotEncoder.getPosition());
+                SmartDashboard.putNumber("Speed", sp);
+
+                shooterSubsystem.speakerMotorPivot.set(sp * 10);
                 // shooterSubsystem.speakerMotorTop.set(0.1);
                 // shooterSubsystem.speakerMotorBottom.set(-0.1);
 				//
@@ -56,7 +60,7 @@ public class AimShooter extends Command {
 				// This means get a limelight distance, ENSURE THAT IS ACCURATE. (still need to use pythagoras for final distance, only considering z distance rn)
 				// One limelight is good, use bot and ll to give distances to shuffleboard so we can MANUALLY CHECK IF THEY ARE RIGHT
 				// If the angles it returns are right we should put them on the bot and then handle EDGE CASES. i.e. no tags, bad input etc
-            }
+            // }
         } else {
 			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
             double sp = MathUtil.applyDeadband(-operator.getRightY(), Constants.OperatorConstants.RIGHT_Y_DEADBAND);

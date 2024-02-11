@@ -8,7 +8,6 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,7 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // speakerMotorBottom = new CANSparkMax(Constants.Shooter.shooterMotorBottomID, MotorType.kBrushless);
         speakerMotorPivot = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
 
-        pivotPIDControllerAuto = new PIDController(0.1, 0, 0);
+        pivotPIDControllerAuto = new PIDController(0.1, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
         pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
