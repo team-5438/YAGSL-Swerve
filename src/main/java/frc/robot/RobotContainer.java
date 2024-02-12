@@ -47,7 +47,7 @@ public class RobotContainer {
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
-  // private final AmpShoot shootAmp = new AmpShoot(ampShooterSubsystem, 120);
+  // private final AmpShoot ampShoot = new AmpShoot(ampShooterSubsystem, 0.22);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -91,7 +91,7 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
-    // new JoystickButton(operator, PS4Controller.Button.kL1.value).onTrue(shootAmp);
+    // new JoystickButton(operator, PS4Controller.Button.kL1.value).onTrue(ampShoot);
   }
 
   /**
