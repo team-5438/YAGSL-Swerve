@@ -33,10 +33,10 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public void execute() {
-        if(Math.abs(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? 13.3 : 0)) < tolerance) {
+        if(Math.abs(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? -13.3 : 0)) < tolerance) {
             aligned = true;
         }
-        rotSpeed = rotationPID.calculate(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? 13.3 : 0), 0.0) / 6;
+        rotSpeed = rotationPID.calculate(ll.tx + (ll.tid == Constants.AprilTags.SPEAKER_OFFSET ? -13.3 : 0), 0.0) / 6;
         swerve.drive(zero, -rotSpeed, false);
     }
 

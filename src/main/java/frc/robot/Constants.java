@@ -65,8 +65,8 @@ public final class Constants {
   }
 
   public static final class AprilTags {
-    public static final long SPEAKER_CENTRAL = 3;
-    public static final long SPEAKER_OFFSET = 4;
+    public static final long SPEAKER_CENTRAL = 4;
+    public static final long SPEAKER_OFFSET = 3;
   }
 
   public static final class Drivebase {
