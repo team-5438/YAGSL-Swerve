@@ -5,6 +5,9 @@
 package frc.robot;
 
 import java.io.File;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,6 +47,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    NamedCommands.registerCommand("Example Command", new InstantCommand(() -> System.out.println("Executing Command")));
     // The robot's subsystems and commands are defined here...
     // Configure the trigger bindings
     configureBindings();
@@ -85,6 +90,7 @@ public class RobotContainer {
         () -> driver.getRawAxis(2));
 
     drivebase.setDefaultCommand(RobotBase.isSimulation() ? driveFieldOrientedDirectAngleSim : driveFieldOrientedAnglularVelocity);
+
   }
 
   /**
@@ -105,6 +111,8 @@ public class RobotContainer {
     //     new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(
       drivebase.getAutonomousCommand("Octagon Path", true));
+
+    new JoystickButton(driver, XboxController.Button.kA.value).onTrue(drivebase.pathfindThenFollowPath("Swerve Path"));
   }
 
   /**

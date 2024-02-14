@@ -163,6 +163,23 @@ public class SwerveSubsystem extends SubsystemBase {
     );
   }
 
+  public Command pathfindThenFollowPath(String pathName)
+  {
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+    PathPlannerLogging.logActivePath(path);
+    return AutoBuilder.pathfindThenFollowPath(
+      path,
+      new PathConstraints(
+        1.2,
+        1.2, 
+        Units.degreesToRadians(540), 
+        Units.degreesToRadians(720)),
+        1.2
+      );
+
+  }
+
   /**
    * Command to drive the robot using translative values and heading as a
    * setpoint.
