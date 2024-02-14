@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -27,6 +28,7 @@ public class AimShooter extends Command {
         
         // Only Aim shooter and rev shooter if in
         if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
+            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 252, 215, 0));
 
             // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
             int heightDif = 78 - Constants.Shooter.height;
@@ -67,6 +69,8 @@ public class AimShooter extends Command {
                 shooterSubsystem.speakerMotorTop.set(0.1);
                 shooterSubsystem.speakerMotorBottom.set(-0.1);
             }
+
+            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 0, 0, 0));
         }
     }
 

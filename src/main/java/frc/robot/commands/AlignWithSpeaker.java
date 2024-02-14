@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -42,6 +43,7 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public boolean isFinished() {
+        LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 0, 255, 0));
         return aligned; 
     }
 }
