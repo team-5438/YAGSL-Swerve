@@ -22,8 +22,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import frc.robot.Constants.DriverConstants;
@@ -41,10 +43,11 @@ public class RobotContainer {
   /* initalize swerve with our config */
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
-  private final LEDCommand ledCommand = new LEDCommand();
   double pov;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -108,6 +111,7 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    new JoystickButton(operator, XboxController.Button.kLeftBumper.value).onTrue(new IntakeCommand(intakeSubsystem));
   }
 
   /**
