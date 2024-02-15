@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -26,9 +25,6 @@ public class LimelightSubsystem extends SubsystemBase {
             Math.pow(cameraPoseTargetSpace[0], 2) +
             Math.pow(cameraPoseTargetSpace[2], 2)
         ) * 39.37;
-        SmartDashboard.putNumber("speakerDistance", speakerDistance);
-        SmartDashboard.putNumber("x", cameraPoseTargetSpace[0]);
-        SmartDashboard.putNumber("z", cameraPoseTargetSpace[2]);
         tx = table.getEntry("tx").getDouble(0);
         tid = table.getEntry("tid").getInteger(0);
     }

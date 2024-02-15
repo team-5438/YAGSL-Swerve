@@ -25,24 +25,21 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShuffleboardTab tab;
 
     public ShooterSubsystem() {
-        // speakerMotorTop = new CANSparkMax(Constants.Shooter.shooterMotorTopID,
-        // MotorType.kBrushless);
-        // speakerMotorBottom = new CANSparkMax(Constants.Shooter.shooterMotorBottomID,
-        // MotorType.kBrushless);
+        speakerMotorTop = new CANSparkMax(Constants.Shooter.shooterMotorTopID, MotorType.kBrushless);
+        // speakerMotorBottom = new CANSparkMax(Constants.Shooter.shooterMotorBottomID, MotorType.kBrushless);
         speakerMotorPivot = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
 
-        pivotPIDControllerAuto = new PIDController(0.1, 0, 0);
+        pivotPIDControllerAuto = new PIDController(0.1, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
-        pivotPIDControllerManual = new PIDController(0.1, 0, 0);
-
         pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
+        pivotEncoder.setZeroOffset(0.078);
 
         tab = Shuffleboard.getTab("ShooterSubsystem");
     }
 
     public void toggleShooterMode() {
         isAutoRunning = !isAutoRunning;
-        System.out.println(isAutoRunning);
+        System.out.println(isAutoRunning ? "Is in shooter mode" : "Is NOT in shooter mode");
     }
 }

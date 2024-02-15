@@ -2,6 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// TODO TODO TODO TODO TODO TODO TODO TODO TODO
+// Look in between april tags for diagram
+// The robot veers in the direction its rotation
+// causing it too follow paths and manual drive commands
+// improperly
+// Fix by applying rotations in code perpendicular to the heading of the robot
+// with directiondetermined by the direciton of rotation
+
 package frc.robot;
 
 import java.io.File;
@@ -12,79 +20,44 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimShooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
 
-import frc.robot.subsystems.AmpShooterSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
-import frc.robot.commands.AmpShoot;
-import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
+  // private final AmpShooterSubsystem ampShooterSubsystem = new
+  // AmpShooterSubsystem();
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
-  private final AmpShoot shootAmp = new AmpShoot(ampShooterSubsystem, 120);
-  private final RevShooterWheels revWheels = new RevShooterWheels(shooterSubsystem);
+  // private final AmpShoot ampShoot = new AmpShoot(ampShooterSubsystem, 0.22);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
 
-    /*
-     * Applies deadbands and inverts controls because joysticks
-     * are back-right positive while robot
-     * controls are front-left positive
-     * left stick controls translation
-     * right stick controls the angular velocity of the robot
-     */
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> driver.getRawAxis(4));
+        () -> driver.getRawAxis(4)
+    );
 
     // Switch for driveFieldOrientedDirectAngleSim if thats needed
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     shooterSubsystem.setDefaultCommand(aimShooter);
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
@@ -92,15 +65,10 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
-    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).onTrue(revWheels);
-    new JoystickButton(operator, PS4Controller.Button.kL1.value).onTrue(shootAmp);
+    // new JoystickButton(operator,
+    // PS4Controller.Button.kL1.value).onTrue(ampShoot);
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
