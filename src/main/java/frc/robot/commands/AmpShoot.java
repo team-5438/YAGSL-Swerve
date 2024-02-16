@@ -10,7 +10,7 @@ public class AmpShoot extends Command {
     public double desiredAngleAmp;
     public double desiredAngleShooter;
 
-    public AmpShoot (AmpShooterSubsystem AmpSubsystem, double desiredAngleAmp, double desiredAngleShooter, ShooterSubsystem shooterSubsystem) {
+    public AmpShoot (AmpShooterSubsystem AmpSubsystem, double desiredAngleAmp, ShooterSubsystem shooterSubsystem, double desiredAngleShooter) {
         this.AmpSubsystem = AmpSubsystem;
         this.desiredAngleAmp = desiredAngleAmp;  
         this.desiredAngleShooter = desiredAngleShooter;
