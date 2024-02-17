@@ -46,7 +46,7 @@ public class RobotContainer {
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
-  double pov;
+  private final ClimbCommand climbCommand = new ClimbCommand(climberSubsystem, operator);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -54,54 +54,15 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    /* absolute driving */
-    AbsoluteFieldDrive closedAbsoluteDriveAdv = new AbsoluteFieldDrive(drivebase,
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getRightX(), DriverConstants.RIGHT_X_DEADBAND));
-
-    /*
-     * Applies deadbands and inverts controls because joysticks
-     * are back-right positive while robot
-     * controls are front-left positive
-     * left stick controls translation
-     * right stick controls the desired angle NOT angular rotation
-     */
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> driver.getRightY(),
-        () -> driver.getRightY());
-
-    /*
-     * Applies deadbands and inverts controls because joysticks
-     * are back-right positive while robot
-     * controls are front-left positive
-     * left stick controls translation
-     * right stick controls the angular velocity of the robot
-     */
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
         () -> driver.getRawAxis(4));
 
-    Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
-        () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND),
-        () -> driver.getRawAxis(2));
-
-    drivebase.setDefaultCommand(RobotBase.isSimulation() ? driveFieldOrientedDirectAngleSim : driveFieldOrientedAnglularVelocity);
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    climberSubsystem.setDefaultCommand(climbCommand);
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
     /* zero gyro when pressing Y on xbox controller */
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(
@@ -109,14 +70,8 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    new JoystickButton(operator, operator.getPOV()).onTrue(new ClimbCommand(climberSubsystem, operator.getPOV()));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
