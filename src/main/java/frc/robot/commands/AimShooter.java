@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -24,13 +23,12 @@ public class AimShooter extends Command {
     @Override
     public void execute() {
         double distance = limelightSubsystem.speakerDistance;
-        SmartDashboard.putNumber("LL Dist", distance);
         
-        // Only Aim shooter and rev shooter if in
+        // Only aim shooter and rev shooter motors if withing the minimum distance
         if (shooterSubsystem.isAutoRunning && distance > 0) {
 			// AUTOMATIC / IN SHOOTER MODE logic or aiming the shooter
             // if(distance <= Constants.Shooter.shooterModeMinDistance * 39.37) {
-            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 252, 215, 0));
+
 				
                 // All of Ryans formula CURRENTLY WE DON'T KNOW INPUTS AND OUTPUTS
                 int heightDif = 78 - Constants.Shooter.height;
@@ -46,22 +44,20 @@ public class AimShooter extends Command {
 				// Get the average of the two, favoring the top cuz grabiby
                 double angle = (min * 1.2 + max) / 2;
 
+                if(Math.abs(shooterSubsystem.pivotEncoder.getPosition() - angle) < 0.01) {
+                    //If robot is aimed properly and ready to shoot
+                    LEDCommand.setStripColor(500, 0, 255, 0);
+                } else {
+                    //If the robot is in shooter mode turn Yellow
+                    LEDCommand.setStripColor(500, 235, 229, 52);
+                }
+
                 double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
                     shooterSubsystem.pivotEncoder.getPosition(), angle / 360);
-
-                SmartDashboard.putNumber("Target Angle", (angle / 360));
-                SmartDashboard.putNumber("Current Angle", shooterSubsystem.pivotEncoder.getPosition());
-                SmartDashboard.putNumber("Speed", sp);
 
                 shooterSubsystem.speakerMotorPivot.set(sp * 10);
                 // shooterSubsystem.speakerMotorTop.set(0.1);
                 // shooterSubsystem.speakerMotorBottom.set(-0.1);
-				//
-				// TODO TODO TODO TODO TODO TODO TODO
-				// Print Ryan's Formula to shuffleboard and ensure that it alone is working
-				// This means get a limelight distance, ENSURE THAT IS ACCURATE. (still need to use pythagoras for final distance, only considering z distance rn)
-				// One limelight is good, use bot and ll to give distances to shuffleboard so we can MANUALLY CHECK IF THEY ARE RIGHT
-				// If the angles it returns are right we should put them on the bot and then handle EDGE CASES. i.e. no tags, bad input etc
             // }
         } else {
 			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
@@ -71,21 +67,17 @@ public class AimShooter extends Command {
             if (sp > 0)
                 sp = Math.abs((shooterSubsystem.pivotEncoder.getPosition() - 0.257) * sp);
             else if (sp < 0)
-                sp = (shooterSubsystem.pivotEncoder.getPosition() > 0.9 ? 0 : shooterSubsystem.pivotEncoder.getPosition())
-                    * sp;
+                sp = (shooterSubsystem.pivotEncoder.getPosition() > 0.9 ? 0 : shooterSubsystem.pivotEncoder.getPosition()) * sp;
 
 			// Safety first <3 (speed clamp)
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
 
             shooterSubsystem.speakerMotorPivot.set(sp); 
 
-			// Look into why this sheet dont work
             if(operator.getTriangleButton()) {
-                shooterSubsystem.speakerMotorTop.set(0.01);
+                // shooterSubsystem.speakerMotorTop.set(0.01);
                 // shooterSubsystem.speakerMotorBottom.set(-0.1);
             }
-
-            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 0, 0, 0));
         }
     }
 }
