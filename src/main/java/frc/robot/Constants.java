@@ -24,15 +24,13 @@ import swervelib.parser.PIDFConfig;
  */
 public final class Constants {
   public static class Shooter {
-    public static final int shooterMotorTopID = 12;
-    public static final int shooterMotorBottomID = 62;
+    public static final int shooterMotorTopID = 8;
+    public static final int shooterMotorBottomID = 9;
     public static final int ampShootMotorID = 0; // TODO: add ID
-    public static final int ampPivotMotorID = 11; // TODO: add ID
-    public static final int ampFeedMotorID = 0; // TODO: add ID
-    public static final int height = 24;
+    public static final int ampPivotMotorID = 7; // TODO: add ID
+    public static final int height = 24; // TODO: Get height of limelight from ground
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
-    public static final int pivotEncoderID = 11;
-    public static final int pivotMotorID = 11;
+    public static final int pivotMotorID = 15;
     public static final double shooterRevSpeed = 1;
     public static final double shooterModeMinDistance = 2.25;
     public static final double topPivotClamp = 0.25;
