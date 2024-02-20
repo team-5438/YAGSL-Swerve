@@ -37,8 +37,8 @@ public final class Constants {
 
   public static class IntakeConstants {
     public static final double maximumIntakeVoltage = 0;
-    public static int intakeMotorID = 12;
-    public static int feedMotorID = 14;
+    public static int intakeMotorID = 4;
+    public static int feedMotorID = 10;
 
   }
 
