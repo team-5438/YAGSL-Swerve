@@ -19,7 +19,7 @@ public class AmpShoot extends Command {
 
     @Override
     public void execute() {
-        double outputAngleShooter = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getPosition(), desiredAngleShooter);
+        double outputAngleShooter = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getAbsolutePosition(), desiredAngleShooter);
         shooterSubsystem.speakerMotorPivot.set(outputAngleShooter);
         // TODO: check if need to make slower and multiply by 360 if its not in degrese 
         double outputAngleAmp = AmpSubsystem.ampPivotPIDController.calculate(AmpSubsystem.ampPivotEncoder.getPosition(), desiredAngleAmp);

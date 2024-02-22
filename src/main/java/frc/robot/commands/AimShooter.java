@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -44,7 +45,7 @@ public class AimShooter extends Command {
 				// Get the average of the two, favoring the top cuz grabiby
                 double angle = (min * 1.2 + max) / 2;
 
-                if(Math.abs(shooterSubsystem.pivotEncoder.getPosition() - angle) < 0.01) {
+                if(Math.abs(shooterSubsystem.pivotEncoder.getAbsolutePosition() - angle) < 0.01) {
                     //If robot is aimed properly and ready to shoot
                     LEDCommand.setStripColor(500, 0, 255, 0);
                 } else {
@@ -53,9 +54,9 @@ public class AimShooter extends Command {
                 }
 
                 double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
-                    shooterSubsystem.pivotEncoder.getPosition(), angle / 360);
+                    shooterSubsystem.pivotEncoder.getAbsolutePosition(), angle / 360);
 
-                shooterSubsystem.speakerMotorPivot.set(sp * 10);
+                // shooterSubsystem.speakerMotorPivot.set(sp * 10);
                 // shooterSubsystem.speakerMotorTop.set(0.1);
                 // shooterSubsystem.speakerMotorBottom.set(-0.1);
             // }
@@ -63,14 +64,21 @@ public class AimShooter extends Command {
 			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
             double sp = MathUtil.applyDeadband(-operator.getRightY(), Constants.OperatorConstants.RIGHT_Y_DEADBAND);
 
+            System.out.println("Encoder angle: " + shooterSubsystem.pivotEncoder.getDistance());
+
             // stop the shooter from going into the ground
-            if (sp > 0)
-                sp = Math.abs((shooterSubsystem.pivotEncoder.getPosition() - 0.257) * sp);
-            else if (sp < 0)
-                sp = (shooterSubsystem.pivotEncoder.getPosition() > 0.9 ? 0 : shooterSubsystem.pivotEncoder.getPosition()) * sp;
+            // if (sp > 0)
+            //     sp = Math.abs((shooterSubsystem.pivotEncoder.getAbsolutePosition() - 0.257) * sp);
+            // else if (sp < 0)
+            //     sp = (shooterSubsystem.pivotEncoder.getAbsolutePosition() > 0.9 ? 0 : shooterSubsystem.pivotEncoder.getAbsolutePosition()) * sp;
 
 			// Safety first <3 (speed clamp)
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
+
+            // sp += shooterSubsystem.pivotFeedforward.calculate(shooterSubsystem.pivotEncoder.getDistance(), sp);
+            if(shooterSubsystem.pivotEncoder.getDistance() > -0.13) {
+                sp += shooterSubsystem.pivotFeedforward.calculate(shooterSubsystem.pivotEncoder.getDistance(), distance, 0.2);
+            }
 
             shooterSubsystem.speakerMotorPivot.set(sp); 
 

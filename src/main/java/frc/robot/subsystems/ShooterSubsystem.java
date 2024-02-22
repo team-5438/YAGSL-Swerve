@@ -5,7 +5,9 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,9 +20,11 @@ public class ShooterSubsystem extends SubsystemBase {
     public CANSparkMax speakerMotorBottom;
 
     public CANSparkMax speakerMotorPivot;
-    public SparkAbsoluteEncoder pivotEncoder;
+    public DutyCycleEncoder pivotEncoder;
     public PIDController pivotPIDControllerAuto;
     public PIDController pivotPIDControllerManual;
+
+    public ArmFeedforward pivotFeedforward;
 
     public ShuffleboardTab tab;
 
@@ -32,10 +36,10 @@ public class ShooterSubsystem extends SubsystemBase {
         pivotPIDControllerAuto = new PIDController(0.1, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
-        pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
-        pivotEncoder.setZeroOffset(0.078);
+        pivotEncoder = new DutyCycleEncoder(Constants.Shooter.pivotEncoderID);
+        pivotEncoder.setPositionOffset(Constants.Shooter.pivotEncoderOffset);
 
-        tab = Shuffleboard.getTab("ShooterSubsystem");
+        pivotFeedforward = new ArmFeedforward(0, 0.0, 0.02, 0.05);
     }
 
     public void toggleShooterMode() {

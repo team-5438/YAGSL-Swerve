@@ -36,6 +36,8 @@ public final class Constants {
     public static final double topPivotClamp = 0.25;
     public static final double bottomPivotClamp = 0;
     public static final double manualPivotSpeedClamp = 0.2;
+    public static final int pivotEncoderID = 1;
+    public static final double pivotEncoderOffset = 0.3;
   }
 
   public static class DriverConstants {
