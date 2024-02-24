@@ -19,6 +19,7 @@ import frc.robot.Constants.DriverConstants;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
+import frc.robot.commands.RevFeedWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
@@ -55,6 +56,7 @@ public class RobotContainer {
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
+    new JoystickButton(operator, PS4Controller.Button.kR1.value).onTrue(new RevFeedWheels(shooterSubsystem).withTimeout(1));
     //new JoystickButton(operator,PS4Controller.Button.kL1.value).onTrue(ampShoot);
   }
 

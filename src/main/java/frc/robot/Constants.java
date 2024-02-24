@@ -31,6 +31,7 @@ public final class Constants {
     public static final int height = 24; // TODO: Get height of limelight from ground
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotMotorID = 15;
+    public static final int shooterFeedMotorID = 10;
     public static final double shooterRevSpeed = 1;
     public static final double shooterModeMinDistance = 2.25;
     public static final double topPivotClamp = 0.25;
