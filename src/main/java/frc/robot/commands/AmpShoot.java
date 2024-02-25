@@ -19,23 +19,26 @@ public class AmpShoot extends Command {
 
     @Override
     public void execute() {
-        double outputAngleShooter = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.getAbsolutePosition(), desiredAngleShooter);
-        shooterSubsystem.speakerMotorPivot.set(outputAngleShooter);
+        double outputAngleShooter = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.get(), desiredAngleShooter);
+        // shooterSubsystem.speakerMotorPivot.set(outputAngleShooter);
         // TODO: check if need to make slower and multiply by 360 if its not in degrese 
         double outputAngleAmp = AmpSubsystem.ampPivotPIDController.calculate(AmpSubsystem.ampPivotEncoder.getPosition(), desiredAngleAmp);
-        AmpSubsystem.ampPivotMotor.set(outputAngleAmp);
-        //System.out.println(AmpSubsystem.ampPivotEncoder.getPosition());
-        //AmpSubsystem.ampFeedMotor.set(1);
-        //AmpSubsystem.ampShootMotor.set(1);
+        // AmpSubsystem.ampPivotMotor.set(outputAngleAmp);
+        System.out.println(AmpSubsystem.ampPivotEncoder.getPosition());
+        // AmpSubsystem.ampShootMotor.set(1);
     }
 
     @Override
     public boolean isFinished() {
         double roundedAngle = Math.round(AmpSubsystem.ampPivotEncoder.getPosition() * 100);
         roundedAngle /= 100;
-        System.out.println(roundedAngle);
         if (roundedAngle + 0.01 >= desiredAngleAmp && roundedAngle - 0.01 <= desiredAngleAmp)
             return true;
         return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        AmpSubsystem.ampShootMotor.set(0);
     }
 }

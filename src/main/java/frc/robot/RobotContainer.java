@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.io.File;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -16,9 +15,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimShooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
+import frc.robot.subsystems.AmpShooterSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
+import frc.robot.commands.AmpShoot;
 import frc.robot.commands.RevFeedWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -26,14 +27,14 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  //private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
+  private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
-  //private final AmpShoot ampShoot = new AmpShoot(ampShooterSubsystem, 0.22, shooterSubsystem, 0.34);
+  private final AmpShoot ampShoot = new AmpShoot(ampShooterSubsystem, 0.22, shooterSubsystem, 0.34);
 
   public RobotContainer() {
     configureBindings();
@@ -57,7 +58,7 @@ public class RobotContainer {
 
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
     new JoystickButton(operator, PS4Controller.Button.kR1.value).onTrue(new RevFeedWheels(shooterSubsystem).withTimeout(1));
-    //new JoystickButton(operator,PS4Controller.Button.kL1.value).onTrue(ampShoot);
+    new JoystickButton(operator,PS4Controller.Button.kSquare.value).onTrue(ampShoot);
   }
 
   public Command getAutonomousCommand() {

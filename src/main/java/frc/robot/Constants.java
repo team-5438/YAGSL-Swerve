@@ -26,9 +26,9 @@ public final class Constants {
   public static class Shooter {
     public static final int shooterMotorTopID = 8;
     public static final int shooterMotorBottomID = 9;
-    public static final int ampShootMotorID = 0; // TODO: add ID
-    public static final int ampPivotMotorID = 7; // TODO: add ID
-    public static final int height = 24; // TODO: Get height of limelight from ground
+    public static final int ampShootMotorID = 16;
+    public static final int ampPivotMotorID = 7;
+    public static final double height = 44; // TODO: Get height of shooter to ground
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotMotorID = 15;
     public static final int shooterFeedMotorID = 10;
