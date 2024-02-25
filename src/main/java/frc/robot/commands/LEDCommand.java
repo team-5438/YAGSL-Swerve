@@ -1,11 +1,19 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.robot.subsystems.LEDSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
-public class LEDCommand implements Runnable {
+public class LEDCommand extends Command implements Runnable {
     private int ar[][];
     private Thread t;
+
+    public LEDCommand(int[][] ar)
+    {
+        this.ar = ar;
+        flashLeds(this.ar);
+    }
 
     public static AddressableLEDBuffer setStripColor(int length, int r, int g, int b) {
         AddressableLEDBuffer m_ledbuffer = new AddressableLEDBuffer(length);

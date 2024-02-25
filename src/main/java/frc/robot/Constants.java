@@ -54,6 +54,13 @@ public final class Constants {
     public static final double RIGHT_Y_DEADBAND = 0.1;
   }
 
+  public static class IntakeConstants {
+    public static final double maximumIntakeVoltage = 0;
+    public static int intakeMotorID = 4;
+    public static int feedMotorID = 10;
+
+  }
+
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound /* TODO: Update for our robot */
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS); /* TODO: Update for our robot */
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag /* TODO: Update for our robot */
