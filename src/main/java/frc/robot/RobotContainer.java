@@ -46,7 +46,6 @@ public class RobotContainer {
   /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
-  double pov;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -109,7 +108,8 @@ public class RobotContainer {
     new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    new JoystickButton(operator, operator.getPOV()).onTrue(new ClimbCommand(climberSubsystem, operator.getPOV()));
+    new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, 1));
+    new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, -1));
   }
 
   /**

@@ -12,6 +12,6 @@ public class ClimberSubsystem extends SubsystemBase{
 
     public ClimberSubsystem() {
         LClimber = new CANSparkMax(Constants.ClimberConstants.LClimberID, MotorType.kBrushless);
-        LClimber = new CANSparkMax(Constants.ClimberConstants.RClimberID, MotorType.kBrushless);
+        RClimber = new CANSparkMax(Constants.ClimberConstants.RClimberID, MotorType.kBrushless);
     }
 }

@@ -5,33 +5,22 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimbCommand extends Command {
     public ClimberSubsystem climberSubsystem;
-    private int foo;
+    public int direction;
 
-    public ClimbCommand(ClimberSubsystem climberSubsystem, int foo) {
-
+    public ClimbCommand(ClimberSubsystem climberSubsystem, int direction) {
         this.climberSubsystem = climberSubsystem;
-        this.foo = foo;
-
+        this.direction = direction;
     } 
 
-    public static void climb(int foo, ClimberSubsystem climberSubsystem) {
-        switch (foo) {
-            case 0:
-                climberSubsystem.RClimber.set(-1);
-                break;
-            case 90:
-                climberSubsystem.RClimber.set(1);
-                break;
-            case 180:
-                climberSubsystem.LClimber.set(-1);
-                break;
-            case 270:
-                climberSubsystem.LClimber.set(1);
-                break;
-        }
-    }
     @Override
     public void execute() {
-        climb(foo, climberSubsystem);
+        climberSubsystem.LClimber.set(direction);
+        climberSubsystem.RClimber.set(direction);
+    }
+
+    @Override
+    public void end(boolean isFinished) {
+        climberSubsystem.LClimber.set(0);
+        climberSubsystem.RClimber.set(0);
     }
 }
