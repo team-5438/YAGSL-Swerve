@@ -20,10 +20,11 @@ public class LimelightSubsystem extends SubsystemBase {
         table = NetworkTableInstance.getDefault().getTable("limelight");
         fieldSpacePosition = table.getEntry("botpose").getDoubleArray(new double[6]);
         cameraPoseTargetSpace = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
+        /* returns distance in inches */
         speakerDistance = Math.sqrt(
             Math.pow(cameraPoseTargetSpace[0], 2) +
             Math.pow(cameraPoseTargetSpace[2], 2)
-        ) * 39.37;
+        ) * 39.33;
         tx = table.getEntry("tx").getDouble(0);
         tid = table.getEntry("tid").getInteger(0);
     }

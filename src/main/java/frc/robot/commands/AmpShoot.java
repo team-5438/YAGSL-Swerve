@@ -1,44 +1,35 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.AmpShooterSubsystem;
+import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class AmpShoot extends Command {
-    public AmpShooterSubsystem AmpSubsystem;
+    public AmpSubsystem ampSubsystem;
     public ShooterSubsystem shooterSubsystem;
     public double desiredAngleAmp;
     public double desiredAngleShooter;
+    public PS4Controller operator;
 
-    public AmpShoot (AmpShooterSubsystem AmpSubsystem, double desiredAngleAmp, ShooterSubsystem shooterSubsystem, double desiredAngleShooter) {
-        this.AmpSubsystem = AmpSubsystem;
-        this.desiredAngleAmp = desiredAngleAmp;  
-        this.desiredAngleShooter = desiredAngleShooter;
+    public AmpShoot (AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem, PS4Controller operator) {
+        this.addRequirements(ampSubsystem);
+        this.ampSubsystem = ampSubsystem;
         this.shooterSubsystem = shooterSubsystem;
+        this.operator = operator;
     }
 
     @Override
     public void execute() {
-        double outputAngleShooter = shooterSubsystem.pivotPIDControllerManual.calculate(shooterSubsystem.pivotEncoder.get(), desiredAngleShooter);
-        // shooterSubsystem.speakerMotorPivot.set(outputAngleShooter);
-        // TODO: check if need to make slower and multiply by 360 if its not in degrese 
-        double outputAngleAmp = AmpSubsystem.ampPivotPIDController.calculate(AmpSubsystem.ampPivotEncoder.getPosition(), desiredAngleAmp);
-        // AmpSubsystem.ampPivotMotor.set(outputAngleAmp);
-        System.out.println(AmpSubsystem.ampPivotEncoder.getPosition());
-        // AmpSubsystem.ampShootMotor.set(1);
+        double sp = operator.getLeftY() / 5;
+
+        // System.out.println("Amp shooter: " + ampSubsystem.ampPivotEncoder.getPosition());
+        sp -= ampSubsystem.ampFeedforward.calculate(ampSubsystem.ampPivotEncoder.getPosition(), sp);
+        ampSubsystem.ampPivotMotor.set(sp);
     }
 
     @Override
     public boolean isFinished() {
-        double roundedAngle = Math.round(AmpSubsystem.ampPivotEncoder.getPosition() * 100);
-        roundedAngle /= 100;
-        if (roundedAngle + 0.01 >= desiredAngleAmp && roundedAngle - 0.01 <= desiredAngleAmp)
-            return true;
         return false;
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        AmpSubsystem.ampShootMotor.set(0);
     }
 }

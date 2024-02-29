@@ -11,47 +11,43 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-<<<<<<< HEAD
 import frc.robot.commands.AimShooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
-import frc.robot.subsystems.AmpShooterSubsystem;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
+import frc.robot.commands.AmpPreset;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.RevFeedWheels;
-=======
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.LEDCommand;
-import frc.robot.commands.drivebase.AbsoluteFieldDrive;
+import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.IntakeSubsystem;
->>>>>>> feat-intake
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final AmpShooterSubsystem ampShooterSubsystem = new AmpShooterSubsystem();
+  public final AmpSubsystem ampSubsystem = new AmpSubsystem();
 
-<<<<<<< HEAD
-  private final XboxController driver = new XboxController(Constants.DriverConstants.id);
-  private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
-=======
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
-  /* initialize controllers */
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
-  private final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
+  public final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
   double pov;
->>>>>>> feat-intake
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
-  private final AmpShoot ampShoot = new AmpShoot(ampShooterSubsystem, 0.22, shooterSubsystem, 0.34);
+  private final AmpShoot ampShoot = new AmpShoot(ampSubsystem, shooterSubsystem, operator);
 
   public RobotContainer() {
     configureBindings();
@@ -64,31 +60,29 @@ public class RobotContainer {
 
     // Switch for driveFieldOrientedDirectAngleSim if thats needed
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    ampSubsystem.setDefaultCommand(ampShoot);
     shooterSubsystem.setDefaultCommand(aimShooter);
   }
 
   private void configureBindings() {
-    /* zero gyro when pressing Y on xbox controller */
-<<<<<<< HEAD
     new JoystickButton(driver, XboxController.Button.kY.value).onTrue(new InstantCommand(drivebase::zeroGyro));
     new JoystickButton(driver, XboxController.Button.kA.value).onTrue(alignWithSpeaker);
     new JoystickButton(driver, XboxController.Button.kX.value).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
-    new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
-    new JoystickButton(operator, PS4Controller.Button.kR1.value).onTrue(new RevFeedWheels(shooterSubsystem).withTimeout(1));
-    new JoystickButton(operator,PS4Controller.Button.kSquare.value).onTrue(ampShoot);
-=======
-    new JoystickButton(driver, XboxController.Button.kY.value).onTrue(
-      new InstantCommand(drivebase::zeroGyro));
-    new JoystickButton(driver, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driver, 2).whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(
-        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    new JoystickButton(operator, XboxController.Button.kLeftBumper.value).onTrue(new IntakeCommand(intakeSubsystem));
->>>>>>> feat-intake
+    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
+    new JoystickButton(operator, PS4Controller.Button.kL2.value).whileTrue(new RevShooterWheels(shooterSubsystem));
+    new JoystickButton(operator, PS4Controller.Button.kSquare.value).onTrue(new SequentialCommandGroup(
+      new IntakeCommand(intakeSubsystem, shooterSubsystem),
+      new InstantCommand(() -> shooterSubsystem.feedMotor.set(-0.21)),
+      new WaitCommand(0.04),
+      new InstantCommand(() -> shooterSubsystem.feedMotor.set(0))
+    ));
+    new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode()));
+    new JoystickButton(operator, PS4Controller.Button.kR2.value).onTrue(new ShootCommand(shooterSubsystem).withTimeout(1));
+    new JoystickButton(operator, PS4Controller.Button.kCross.value).onTrue(new AmpPreset(0.25, ampSubsystem));
   }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return null;
   }
 

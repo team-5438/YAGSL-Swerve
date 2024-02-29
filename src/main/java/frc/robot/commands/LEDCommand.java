@@ -2,7 +2,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.robot.subsystems.LEDSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
 public class LEDCommand extends Command implements Runnable {

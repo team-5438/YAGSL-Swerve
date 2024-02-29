@@ -14,10 +14,12 @@ public class RevShooterWheels extends Command {
     @Override
     public void execute() {
         shooterSubsystem.speakerMotorTop.set(Constants.Shooter.shooterRevSpeed);
+        shooterSubsystem.speakerMotorBottom.set(-Constants.Shooter.shooterRevSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.speakerMotorTop.set(0);
+        shooterSubsystem.speakerMotorBottom.set(0);
     }
 }

@@ -28,17 +28,19 @@ public final class Constants {
     public static final int shooterMotorBottomID = 9;
     public static final int ampShootMotorID = 16;
     public static final int ampPivotMotorID = 7;
-    public static final double height = 44; // TODO: Get height of shooter to ground
+    public static final double height = 15; // TODO: Get height of shooter to ground
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotMotorID = 15;
     public static final int shooterFeedMotorID = 10;
-    public static final double shooterRevSpeed = 1;
+    public static final double shooterRevSpeed = 0.75;
     public static final double shooterModeMinDistance = 2.25;
     public static final double topPivotClamp = 0.25;
     public static final double bottomPivotClamp = 0;
     public static final double manualPivotSpeedClamp = 0.2;
     public static final int pivotEncoderID = 1;
     public static final double pivotEncoderOffset = 0.3;
+    public static final double shooterShootPivotPreset = -0.114;
+    public static final double ampShootingPivotPreset = 0.5314;
   }
 
   public static class DriverConstants {
@@ -52,6 +54,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int id = 1;
     public static final double RIGHT_Y_DEADBAND = 0.1;
+    public static final double LEFT_Y_DEADBAND = 0.1;
   }
 
   public static class IntakeConstants {

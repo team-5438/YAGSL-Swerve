@@ -2,9 +2,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,7 +18,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public CANSparkMax speakerMotorTop;
     public CANSparkMax speakerMotorBottom;
-    public CANSparkMax shooterFeed;
+    public CANSparkMax feedMotor;
+    public double feedVoltage;
+    public ColorSensorV3 colorSensor;
 
     public CANSparkMax speakerMotorPivot;
     public DutyCycleEncoder pivotEncoder;
@@ -29,9 +35,9 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorTop = new CANSparkMax(Constants.Shooter.shooterMotorTopID, MotorType.kBrushless);
         speakerMotorBottom = new CANSparkMax(Constants.Shooter.shooterMotorBottomID, MotorType.kBrushless);
         speakerMotorPivot = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
-        shooterFeed = new CANSparkMax(Constants.Shooter.shooterFeedMotorID, MotorType.kBrushless);
+        feedMotor = new CANSparkMax(Constants.Shooter.shooterFeedMotorID, MotorType.kBrushless);
 
-        pivotPIDControllerAuto = new PIDController(0.1, 0, 0.0);
+        pivotPIDControllerAuto = new PIDController(0.7, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
         pivotPIDControllerManual = new PIDController(0.1, 0, 0);
@@ -42,11 +48,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
         pivotFeedforward = new ArmFeedforward(0, 0.0, 0.02, 0.05);
 
-        /* Invert motor so we shoot outwards */
-        shooterFeed.setInverted(true);
+        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
-        /* make bottom speaker motor follow the top but inverted */
-        speakerMotorBottom.follow(speakerMotorTop, true);
+        /* Invert motor so we shoot outwards */
+        feedMotor.setInverted(true);
     }
 
     /* we need to invert the encoder angle because it spins opposite of the shooter */
