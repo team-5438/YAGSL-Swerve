@@ -32,8 +32,8 @@ public final class Constants {
   }
 
   public static class ClimberConstants {
-    public static final int LClimberID = 0; // TODO: add ID
-    public static final int RClimberID = 0; // TODO: add ID
+    public static final int LClimberID = 18;
+    public static final int RClimberID = 17; 
   }
 
   public static class OperatorConstants {
