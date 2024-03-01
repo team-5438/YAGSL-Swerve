@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -13,7 +12,7 @@ public class AmpPreset extends Command {
     double shooterAngle = 0.118;
 
     public AmpPreset(double encoderSetPoint, AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem, boolean endAtAngle) {
-        this.addRequirements(ampSubsystem);
+        // this.addRequirements(ampSubsystem);
         this.addRequirements(shooterSubsystem);
         this.ampSubsystem = ampSubsystem;
         this.encoderSetPoint = encoderSetPoint;
@@ -35,5 +34,10 @@ public class AmpPreset extends Command {
             return Math.abs(shooterAngle - -shooterSubsystem.pivotEncoder.getDistance()) < 0.01;
         }
         return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooterSubsystem.speakerMotorPivot.set(0);
     }
 }

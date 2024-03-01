@@ -93,11 +93,14 @@ public class RobotContainer {
     ));
     new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
     new JoystickButton(operator, PS4Controller.Button.kR2.value).onTrue(new ShootCommand(shooterSubsystem).withTimeout(1));
-    new JoystickButton(operator, PS4Controller.Button.kCross.value).onTrue(new SequentialCommandGroup(new AmpPreset(0.25, ampSubsystem, shooterSubsystem, true), new AmpPreset(0.25, ampSubsystem, shooterSubsystem, false).withTimeout(3)));
+    new JoystickButton(operator, PS4Controller.Button.kCross.value).onTrue(new SequentialCommandGroup(
+        new AmpPreset(0.25, ampSubsystem, shooterSubsystem, true),
+        new AmpPreset(0.25, ampSubsystem, shooterSubsystem, false).withTimeout(3)
+    ));
     new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(ampShoot);
 
-    new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, 0.5));
-    new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, -0.5));
+    new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.5));
+    new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.5));
   }
 
   public Command getAutonomousCommand() {
