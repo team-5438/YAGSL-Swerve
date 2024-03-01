@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
 
@@ -28,11 +29,11 @@ public final class Constants {
     public static final int shooterMotorBottomID = 9;
     public static final int ampShootMotorID = 16;
     public static final int ampPivotMotorID = 7;
-    public static final double height = 15; // TODO: Get height of shooter to ground
+    public static final double height = 40; // TODO: Get height of shooter to ground
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotMotorID = 15;
     public static final int shooterFeedMotorID = 10;
-    public static final double shooterRevSpeed = 0.75;
+    public static final double shooterRevSpeed = 0.1;
     public static final double shooterModeMinDistance = 2.25;
     public static final double topPivotClamp = 0.25;
     public static final double bottomPivotClamp = 0;
@@ -49,6 +50,11 @@ public final class Constants {
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
+  }
+
+  public static class ClimberConstants {
+    public static final int LClimberID = 18;
+    public static final int RClimberID = 17;
   }
 
   public static class OperatorConstants {
@@ -76,8 +82,8 @@ public final class Constants {
   }
 
   public static final class AprilTags {
-    public static final long SPEAKER_CENTRAL = 4;
-    public static final long SPEAKER_OFFSET = 3;
+    public static final long SPEAKER_CENTRAL = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 4 : 7;
+    public static final long SPEAKER_OFFSET = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 3 : 8;
   }
 
   public static final class Drivebase {

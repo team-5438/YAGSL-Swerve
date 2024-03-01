@@ -1,35 +1,29 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class AmpShoot extends Command {
-    public AmpSubsystem ampSubsystem;
-    public ShooterSubsystem shooterSubsystem;
-    public double desiredAngleAmp;
-    public double desiredAngleShooter;
-    public PS4Controller operator;
+    private AmpSubsystem ampSubsystem;
+    private ShooterSubsystem shooterSubsystem;
 
-    public AmpShoot (AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem, PS4Controller operator) {
-        this.addRequirements(ampSubsystem);
+    public AmpShoot(AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem) {
         this.ampSubsystem = ampSubsystem;
         this.shooterSubsystem = shooterSubsystem;
-        this.operator = operator;
     }
 
     @Override
     public void execute() {
-        double sp = operator.getLeftY() / 5;
-
-        // System.out.println("Amp shooter: " + ampSubsystem.ampPivotEncoder.getPosition());
-        sp -= ampSubsystem.ampFeedforward.calculate(ampSubsystem.ampPivotEncoder.getPosition(), sp);
-        ampSubsystem.ampPivotMotor.set(sp);
+        ampSubsystem.ampShootMotor.set(1);
+        shooterSubsystem.speakerMotorTop.set(0.2);
+        shooterSubsystem.speakerMotorBottom.set(-0.2);
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
+    public void end(boolean interrupted) {
+        ampSubsystem.ampShootMotor.set(0);
+        shooterSubsystem.speakerMotorTop.set(0);
+        shooterSubsystem.speakerMotorBottom.set(0);
     }
 }

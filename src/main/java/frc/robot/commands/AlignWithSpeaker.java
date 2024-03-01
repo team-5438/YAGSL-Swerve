@@ -1,7 +1,10 @@
 package frc.robot.commands;
 
+import java.sql.Driver;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -30,6 +33,7 @@ public class AlignWithSpeaker extends Command {
     @Override
     public void initialize() {
         aligned = false;
+
     }
 
     @Override

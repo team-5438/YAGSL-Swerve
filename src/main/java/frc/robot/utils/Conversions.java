@@ -2,6 +2,10 @@ package frc.robot.utils;
 
 public class Conversions {
 
+    public static double inchToCentimete(double inch) {
+        return inch * 2.54;
+    }
+
     /**
      * @param positionCounts CANCoder Position Counts
      * @param gearRatio Gear Ratio between CANCoder and Mechanism
