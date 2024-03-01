@@ -48,7 +48,12 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    NamedCommands.registerCommand("Example Command", new InstantCommand(() -> System.out.println("Executing Command")));
+    // Named Commands must be the first code called in RobotContainer
+    NamedCommands.registerCommand("AutoAim", new InstantCommand(() -> System.out.println("Shoot")));
+    NamedCommands.registerCommand("Intake", new InstantCommand(() -> System.out.println("Intaking")));
+    NamedCommands.registerCommand("RevIntake", new InstantCommand(() -> System.out.println("Revving Intake Wheels")));
+    NamedCommands.registerCommand("Shoot", new InstantCommand(() -> System.out.println("Shooting")));
+
     // The robot's subsystems and commands are defined here...
     // Configure the trigger bindings
     configureBindings();
