@@ -1,0 +1,221 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.8501657516135543,
+        "y": 6.5
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8384715971711143,
+        "y": 7.1899551121039575
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9026396514331485,
+        "y": 7.016492665463964
+      },
+      "prevControl": {
+        "x": 2.5915590194123017,
+        "y": 7.011931658416216
+      },
+      "nextControl": {
+        "x": 3.0026289047230703,
+        "y": 7.01795868951693
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.4699559370628714,
+        "y": 6.186207700050727
+      },
+      "prevControl": {
+        "x": 3.0007965551477063,
+        "y": 6.224124887056786
+      },
+      "nextControl": {
+        "x": 2.3062377748687117,
+        "y": 6.174513545608288
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.1776020760018726,
+        "y": 5.589805823486292
+      },
+      "prevControl": {
+        "x": 2.22455213566128,
+        "y": 6.059306420080365
+      },
+      "nextControl": {
+        "x": 2.1659079215594326,
+        "y": 5.472864279061892
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.1,
+        "y": 5.6
+      },
+      "prevControl": {
+        "x": 4.247915250785455,
+        "y": 5.581510593651817
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake_Shoot_1",
+      "waypointRelativePos": 0.75,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAim"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "RevIntake"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intake_Shoot_2",
+      "waypointRelativePos": 2.85,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAim"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "RevIntake"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intake_3",
+      "waypointRelativePos": 3.6,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AutoAim"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "RevIntake"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Auto Segments",
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

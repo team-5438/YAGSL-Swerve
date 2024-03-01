@@ -9,6 +9,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +20,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
@@ -72,6 +74,8 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
 
     setupPathPlanner();
+    PathPlannerLogging.setLogActivePathCallback((poses) -> swerveDrive.field.getObject("path").setPoses(poses));
+    SmartDashboard.putData("Field", swerveDrive.field);
   }
 
   /**
@@ -92,13 +96,11 @@ public class SwerveSubsystem extends SubsystemBase {
         this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(5.0, 0.0, 0.0),
+            new PIDConstants(0.1, 0.0, 0.71),
             // Translation PID constants
-            new PIDConstants(swerveDrive.swerveController.config.headingPIDF.p,
-                swerveDrive.swerveController.config.headingPIDF.i,
-                swerveDrive.swerveController.config.headingPIDF.d),
+            new PIDConstants(0.0, 0.0, 0.0),
             // Rotation PID constants
-            4.5,
+            maximumSpeed,
             // Max module speed, in m/s
             swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
             // Drive base radius in meters. Distance from robot center to furthest module.
@@ -134,6 +136,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Create a path following command using AutoBuilder. This will also trigger
     // event markers.
+    PathPlannerLogging.logActivePath(path);
     return AutoBuilder.followPath(path);
   }
 
@@ -157,6 +160,23 @@ public class SwerveSubsystem extends SubsystemBase {
         0.0 // Rotation delay distance in meters. This is how far the robot should travel
             // before attempting to rotate.
     );
+  }
+
+  public Command pathfindThenFollowPath(String pathName)
+  {
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+    PathPlannerLogging.logActivePath(path);
+    return AutoBuilder.pathfindThenFollowPath(
+      path,
+      new PathConstraints(
+        1.2,
+        1.2, 
+        Units.degreesToRadians(540), 
+        Units.degreesToRadians(720)),
+        1.2
+      );
+
   }
 
   /**

@@ -6,7 +6,7 @@ package frc.robot;
 
 import java.io.File;
 
-import javax.swing.GroupLayout.SequentialGroup;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,7 +29,6 @@ import frc.robot.commands.AlignWithSpeaker;
 import frc.robot.commands.AmpPivot;
 import frc.robot.commands.AmpPreset;
 import frc.robot.commands.AmpShoot;
-import frc.robot.commands.RevFeedWheels;
 import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -65,6 +63,15 @@ public class RobotContainer {
   private final AmpShoot ampShoot = new AmpShoot(ampSubsystem, shooterSubsystem);
 
   public RobotContainer() {
+
+    // Named Commands must be the first code called in RobotContainer
+    NamedCommands.registerCommand("AutoAim", new InstantCommand(() -> System.out.println("Shoot")));
+    NamedCommands.registerCommand("Intake", new InstantCommand(() -> System.out.println("Intaking")));
+    NamedCommands.registerCommand("RevIntake", new InstantCommand(() -> System.out.println("Revving Intake Wheels")));
+    NamedCommands.registerCommand("Shoot", new InstantCommand(() -> System.out.println("Shooting")));
+
+    // The robot's subsystems and commands are defined here...
+    // Configure the trigger bindings
     configureBindings();
 
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
