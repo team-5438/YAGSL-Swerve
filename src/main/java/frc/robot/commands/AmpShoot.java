@@ -7,17 +7,22 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class AmpShoot extends Command {
     private AmpSubsystem ampSubsystem;
     private ShooterSubsystem shooterSubsystem;
+    private double speed;
 
-    public AmpShoot(AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem) {
+    public AmpShoot(AmpSubsystem ampSubsystem, ShooterSubsystem shooterSubsystem, double speed) {
         this.ampSubsystem = ampSubsystem;
         this.shooterSubsystem = shooterSubsystem;
+        this.speed = speed;
     }
 
     @Override
     public void execute() {
-        ampSubsystem.ampShootMotor.set(1);
-        shooterSubsystem.speakerMotorTop.set(0.2);
-        shooterSubsystem.speakerMotorBottom.set(-0.2);
+        System.out.println("AMP SHOOTING");
+        ampSubsystem.ampShootMotor.set(speed);
+        if (speed > 0) {
+            shooterSubsystem.speakerMotorTop.set(0.2);
+            shooterSubsystem.speakerMotorBottom.set(-0.2);
+        }
     }
 
     @Override

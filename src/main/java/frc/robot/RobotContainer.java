@@ -60,15 +60,22 @@ public class RobotContainer {
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
   private final AmpPivot ampPivot = new AmpPivot(ampSubsystem, shooterSubsystem, operator);
-  private final AmpShoot ampShoot = new AmpShoot(ampSubsystem, shooterSubsystem);
 
   public RobotContainer() {
 
     // Named Commands must be the first code called in RobotContainer
-    NamedCommands.registerCommand("AutoAim", new InstantCommand(() -> System.out.println("Shoot")));
-    NamedCommands.registerCommand("Intake", new InstantCommand(() -> System.out.println("Intaking")));
-    NamedCommands.registerCommand("RevIntake", new InstantCommand(() -> System.out.println("Revving Intake Wheels")));
-    NamedCommands.registerCommand("Shoot", new InstantCommand(() -> System.out.println("Shooting")));
+    /*NamedCommands.registerCommand("Intake", new RevShooterWheels(shooterSubsystem).andThen(
+     new SequentialCommandGroup(
+        new IntakeCommand(intakeSubsystem, shooterSubsystem),
+        new InstantCommand(() -> shooterSubsystem.feedMotor.set(-0.21)),
+        new WaitCommand(0.04),
+        new InstantCommand(() -> shooterSubsystem.feedMotor.set(0)),
+        new InstantCommand(() -> shooterSubsystem.speakerMotorBottom.set(0)),
+        new InstantCommand(() -> shooterSubsystem.speakerMotorTop.set(0))
+    ))); */
+    NamedCommands.registerCommand("Intake", new InstantCommand(() -> System.out.println("Intaking...")));
+    NamedCommands.registerCommand("AutoAim", new InstantCommand(() -> System.out.println("Auto Aiming Wheels")));
+    NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem, intakeSubsystem).withTimeout(1));
 
     // The robot's subsystems and commands are defined here...
     // Configure the trigger bindings
@@ -98,20 +105,21 @@ public class RobotContainer {
         new WaitCommand(0.04),
         new InstantCommand(() -> shooterSubsystem.feedMotor.set(0))
     ));
-    new JoystickButton(operator, PS4Controller.Button.kCircle.value).onTrue(new InstantCommand(() -> shooterSubsystem.toggleShooterMode(), shooterSubsystem));
-    new JoystickButton(operator, PS4Controller.Button.kR2.value).onTrue(new ShootCommand(shooterSubsystem).withTimeout(1));
+    new JoystickButton(operator, PS4Controller.Button.kR2.value).onTrue(new ShootCommand(shooterSubsystem, intakeSubsystem).withTimeout(1));
     new JoystickButton(operator, PS4Controller.Button.kCross.value).onTrue(new SequentialCommandGroup(
         new AmpPreset(0.25, ampSubsystem, shooterSubsystem, true),
         new AmpPreset(0.25, ampSubsystem, shooterSubsystem, false).withTimeout(3)
     ));
-    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(ampShoot);
+    new JoystickButton(operator, PS4Controller.Button.kTriangle.value).whileTrue(new AmpShoot(ampSubsystem, shooterSubsystem, 1));
+    new JoystickButton(operator, PS4Controller.Button.kCircle.value).whileTrue(new AmpShoot(ampSubsystem, shooterSubsystem, -1));
 
     new JoystickButton(operator, PS4Controller.Button.kOptions.value).whileTrue(new ClimbCommand(climberSubsystem, 0.5));
     new JoystickButton(operator, PS4Controller.Button.kShare.value).whileTrue(new ClimbCommand(climberSubsystem, -0.5));
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    System.out.println("Running autonomous...");
+    return drivebase.getAutonomousCommand("A1 A2", true);
   }
 
   public void printToDashboard() {

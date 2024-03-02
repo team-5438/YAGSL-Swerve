@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8501657516135543,
-        "y": 6.5
+        "x": 1.8878506230621577,
+        "y": 7.016492665463964
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8384715971711143,
-        "y": 7.1899551121039575
+        "x": 2.4499707772596704,
+        "y": 7.0733452736520315
       },
       "isLocked": false,
       "linkedName": null
@@ -78,128 +78,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake_Shoot_1",
-      "waypointRelativePos": 0.75,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "AutoAim"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "RevIntake"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake_Shoot_2",
-      "waypointRelativePos": 2.85,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "AutoAim"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "RevIntake"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake_3",
-      "waypointRelativePos": 3.6,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "AutoAim"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "RevIntake"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 1.5,

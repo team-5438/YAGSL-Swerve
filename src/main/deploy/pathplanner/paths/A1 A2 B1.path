@@ -152,12 +152,6 @@
                   {
                     "type": "named",
                     "data": {
-                      "name": "AutoAim"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
                       "name": "RevIntake"
                     }
                   }

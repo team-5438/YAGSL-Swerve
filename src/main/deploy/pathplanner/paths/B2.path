@@ -55,25 +55,6 @@
         "data": {
           "commands": [
             {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "AutoAim"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "RevIntake"
-                    }
-                  }
-                ]
-              }
-            },
-            {
               "type": "named",
               "data": {
                 "name": "Intake"
