@@ -4,9 +4,19 @@
 
 package frc.robot;
 
+import javax.management.InstanceAlreadyExistsException;
+
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AlignWithSpeaker;
+import frc.robot.commands.RevFeedWheels;
+import frc.robot.commands.RevShooterWheels;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.LEDSubsystem;
 
 /**
@@ -60,12 +70,20 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-      // m_autonomousCommand.schedule();
-    // }
+    // schedule the autonomous command (example)+
+     if (m_autonomousCommand != null) {
+       new SequentialCommandGroup(
+        new InstantCommand(m_robotContainer.drivebase::zeroGyro),
+        new WaitCommand(2.5),
+        new RevShooterWheels(m_robotContainer.shooterSubsystem, 0.0).withTimeout(1.0),
+        new ShootCommand(m_robotContainer.shooterSubsystem, m_robotContainer.intakeSubsystem).withTimeout(1.0),
+        new WaitCommand(7.0),
+        m_autonomousCommand
+      ).schedule();
+
+    } 
   }
 
   /** This function is called periodically during autonomous. */

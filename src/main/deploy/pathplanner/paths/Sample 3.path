@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.1,
-        "y": 5.6
+        "x": 15.144517592886828,
+        "y": 5.562647359246215
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.159611458824057,
-        "y": 7.191904982100564
+        "x": 15.308469304527769,
+        "y": 7.576911245120637
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.270256540513081,
-        "y": 5.776912294565331
+        "x": 13.434735457202727,
+        "y": 7.014791090923124
       },
       "prevControl": {
-        "x": 8.170256540513082,
-        "y": 5.776912294565331
+        "x": 13.786060553576174,
+        "y": 7.003080254377342
       },
       "nextControl": {
-        "x": 8.37025654051308,
-        "y": 5.776912294565331
+        "x": 13.0870228200221,
+        "y": 7.026381512162478
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9901960145800635,
-        "y": 5.81199475789265
+        "x": 15.132806756341045,
+        "y": 5.539225686154654
       },
       "prevControl": {
-        "x": 5.0660582232845375,
-        "y": 6.852774503269805
+        "x": 15.062541737066358,
+        "y": 6.312140898176235
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,9 +49,9 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.75,
+      "waypointRelativePos": 0.45,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
@@ -66,7 +66,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 1.95,
+      "waypointRelativePos": 2.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -84,20 +84,20 @@
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 1.7,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 180.0,
+    "maxAngularAcceleration": 90.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Auto Segments",
+  "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

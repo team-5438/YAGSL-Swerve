@@ -1,8 +1,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -23,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ColorSensorV3 colorSensor;
 
     public CANSparkMax speakerMotorPivot;
-    public DutyCycleEncoder pivotEncoder;
+    public RelativeEncoder pivotEncoder;
     public PIDController pivotPIDControllerAuto;
     public PIDController pivotPIDControllerManual;
 
@@ -37,14 +41,16 @@ public class ShooterSubsystem extends SubsystemBase {
         speakerMotorPivot = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
         feedMotor = new CANSparkMax(Constants.Shooter.shooterFeedMotorID, MotorType.kBrushless);
 
-        pivotPIDControllerAuto = new PIDController(0.7, 0, 0.0);
+        pivotPIDControllerAuto = new PIDController(2, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
         pivotPIDControllerManual = new PIDController(0.1, 0, 0);
         pivotPIDControllerManual.enableContinuousInput(0, 1);
 
-        pivotEncoder = new DutyCycleEncoder(Constants.Shooter.pivotEncoderID);
-        pivotEncoder.setPositionOffset(Constants.Shooter.pivotEncoderOffset);
+        // pivotEncoder = new SparkAbsoluteEncoder(CANSparkBase.)
+        pivotEncoder = speakerMotorPivot.getEncoder();
+        // pivotEncoder = new DutyCycleEncoder(Constants.Shooter.pivotEncoderID);
+        // pivotEncoder.setPositionOffset(Constants.Shooter.pivotEncoderOffset);
 
         pivotFeedforward = new ArmFeedforward(0, 0.0, 0.02, 0.05);
 

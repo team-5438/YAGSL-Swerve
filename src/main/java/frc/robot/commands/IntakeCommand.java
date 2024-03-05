@@ -23,7 +23,7 @@ public class IntakeCommand extends Command{
     @Override
     public void execute() {
         shooterSubsystem.feedMotor.set(0.1);
-        intakeSubsystem.intakeMotor.set(0.90);
+        intakeSubsystem.intakeMotor.set(1);
         System.out.println("Prox: " + shooterSubsystem.colorSensor.getProximity());
     }
 

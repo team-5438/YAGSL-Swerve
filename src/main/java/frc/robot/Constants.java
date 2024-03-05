@@ -33,13 +33,13 @@ public final class Constants {
     public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0);
     public static final int pivotMotorID = 15;
     public static final int shooterFeedMotorID = 10;
-    public static final double shooterRevSpeed = 0.75;
+    public static final double shooterRevSpeed = 0.2;
     public static final double shooterModeMinDistance = 2.25;
     public static final double topPivotClamp = 0.25;
     public static final double bottomPivotClamp = 0;
     public static final double manualPivotSpeedClamp = 0.2;
     public static final int pivotEncoderID = 1;
-    public static final double pivotEncoderOffset = 0.3;
+    public static final double pivotEncoderOffset = 0.47;
     public static final double shooterShootPivotPreset = -0.114;
     public static final double ampShootingPivotPreset = 0.5314;
   }
