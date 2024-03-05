@@ -30,6 +30,7 @@ public class IntakeCommand extends Command{
 
     @Override
     public boolean isFinished() {
+        // TODO: if 15 seconds has passed and there is no input end the command
         if (shooterSubsystem.colorSensor.getProximity() > 150) {
             /* we've detected the note! now end the command */
             new FlashLEDS("Intake", LEDSubsystem.led0, green);
