@@ -1,29 +1,31 @@
 package frc.robot.commands;
+
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.robot.subsystems.LEDSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-
-public class LEDCommand extends Command implements Runnable {
-    private int ar[][];
-    private Thread t;
-
-    public LEDCommand(int[][] ar)
-    {
-        this.ar = ar;
-        flashLeds(this.ar);
-    }
-
+public class LEDCommand extends Command {
     public static AddressableLEDBuffer setStripColor(int length, int r, int g, int b) {
         AddressableLEDBuffer m_ledbuffer = new AddressableLEDBuffer(length);
-        for (int i = 0; i < m_ledbuffer.getLength(); i++) {
+        for (int i = 0; i < m_ledbuffer.getLength(); i++)
             m_ledbuffer.setRGB(i, r, g, b);
-        }
         return m_ledbuffer;
     }
+}
 
-    public void flashLeds(int ar[][]) {
+class FlashLEDS extends Thread {
+    private int ar[][];
+    private String id;
+    private AddressableLED led;
+
+    private Thread t;
+
+    public FlashLEDS(String id, AddressableLED led, int ar[][]) {
         this.ar = ar;
+        this.id = id;
+        this.led = led;
+
         t = new Thread(this, "LED Thread");
         t.start();
     }
@@ -44,7 +46,7 @@ public class LEDCommand extends Command implements Runnable {
                 b = ar[i][2];
                 time = ar[i][3];
             }            
-            LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, r, g, b));
+            LEDSubsystem.setStrip(id, led, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), r, g, b));
         }
     }
 }

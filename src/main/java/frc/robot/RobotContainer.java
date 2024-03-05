@@ -37,6 +37,7 @@ import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 
 import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -52,6 +53,7 @@ public class RobotContainer {
   public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   public final AmpSubsystem ampSubsystem = new AmpSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem climberSubsystem  = new ClimberSubsystem();

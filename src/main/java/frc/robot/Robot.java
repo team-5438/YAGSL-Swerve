@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -18,6 +19,8 @@ import frc.robot.commands.RevFeedWheels;
 import frc.robot.commands.RevShooterWheels;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.LEDSubsystem;
+=======
+>>>>>>> ca468a5 (Modify leds to implement locking)
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -39,7 +42,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    LEDSubsystem LED = new LEDSubsystem(27);
   }
 
   /**

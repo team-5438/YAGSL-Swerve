@@ -17,7 +17,8 @@ public class IntakeCommand extends Command{
 
     @Override
     public void initialize() {
-        LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 255, 200, 0));
+        LEDSubsystem.aquireLock("Intake", LEDSubsystem.led0);
+        LEDSubsystem.setStrip("Intake", LEDSubsystem.led0, LEDCommand.setStripColor(27, 255, 200, 0));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class IntakeCommand extends Command{
     public boolean isFinished() {
         if (shooterSubsystem.colorSensor.getProximity() > 150) {
             /* we've detected the note! now end the command */
-            new LEDCommand(green);
+            new FlashLEDS("Intake", LEDSubsystem.led0, green);
             return true;
         }
         return false;
@@ -39,6 +40,7 @@ public class IntakeCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
+        LEDSubsystem.releaseLock("Intake", LEDSubsystem.led0);
         shooterSubsystem.feedMotor.set(0);
         intakeSubsystem.intakeMotor.set(0);
     }
