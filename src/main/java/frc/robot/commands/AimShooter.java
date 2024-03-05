@@ -29,7 +29,7 @@ public class AimShooter extends Command {
 
     @Override
     public void execute() {        
-        double distance = limelightSubsystem.speakerDistance;
+        double distance = limelightSubsystem.tagDistance;
         System.out.println("Encoder: " + shooterSubsystem.pivotEncoder.getPosition());
 
         if (distance != 0 && (limelightSubsystem.tid == Constants.AprilTags.SPEAKER_CENTRAL || limelightSubsystem.tid == Constants.AprilTags.SPEAKER_OFFSET)) {
@@ -68,24 +68,15 @@ public class AimShooter extends Command {
                 shooterSubsystem.fixEncoderAngle(shooterSubsystem.pivotEncoder.getPosition()), angle);
             shooterSubsystem.speakerMotorPivot.set(sp * 10);
 
-<<<<<<< HEAD
-            if (Math.abs(shooterSubsystem.pivotEncoder.getPosition() - angle) < 0.02) {
-                if (lastLed != (led = LEDCommand.setStripColor(27, 0, 255, 0)))
-                    LEDSubsystem.sponsorStrip1.setData(led);
-            } else {
-                if (lastLed != (led = LEDCommand.setStripColor(27, 235, 299, 52)))
-                    LEDSubsystem.sponsorStrip1.setData(led);
-=======
-            if (shooterSubsystem.pivotEncoder.getDistance() < -0.14 && sp > 0) {
+            if (shooterSubsystem.pivotEncoder.getPosition() < -0.14 && sp > 0) {
                 shooterSubsystem.speakerMotorPivot.set(0);
             } else
                 shooterSubsystem.speakerMotorPivot.set(sp * 10);
 
-            if (Math.abs(shooterSubsystem.pivotEncoder.get() - angle) < 0.02) {
+            if (Math.abs(shooterSubsystem.pivotEncoder.getPosition() - angle) < 0.02) {
                 LEDSubsystem.setStrip("Shooter", LEDSubsystem.led0, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), 0, 255, 0));
             } else {
                 LEDSubsystem.setStrip("Shooter", LEDSubsystem.led0, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), 255, 255, 255));
->>>>>>> ca468a5 (Modify leds to implement locking)
             }
         } else {
 			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
