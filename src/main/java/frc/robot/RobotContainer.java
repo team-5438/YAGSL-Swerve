@@ -48,14 +48,14 @@ import frc.robot.subsystems.ClimberSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   public final AmpSubsystem ampSubsystem = new AmpSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  public final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final ClimberSubsystem climberSubsystem  = new ClimberSubsystem();
+  public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public final ClimberSubsystem climberSubsystem  = new ClimberSubsystem();
 
   private final XboxController driver = new XboxController(Constants.DriverConstants.id);
   public final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);

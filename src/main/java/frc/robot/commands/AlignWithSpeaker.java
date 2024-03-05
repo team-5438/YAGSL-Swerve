@@ -37,6 +37,6 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(27, 0, 255, 0));
+        LEDSubsystem.led0.setData(LEDCommand.setStripColor(27, 0, 255, 0));
     }
 }
