@@ -17,18 +17,17 @@ public class AmpShoot extends Command {
 
     @Override
     public void execute() {
-        System.out.println("AMP SHOOTING");
         ampSubsystem.ampShootMotor.set(speed);
         if (speed > 0) {
-            shooterSubsystem.speakerMotorTop.set(0.2);
-            shooterSubsystem.speakerMotorBottom.set(-0.2);
+            shooterSubsystem.topRevMotor.set(0.2);
+            shooterSubsystem.bottomRevMotor.set(-0.2);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         ampSubsystem.ampShootMotor.set(0);
-        shooterSubsystem.speakerMotorTop.set(0);
-        shooterSubsystem.speakerMotorBottom.set(0);
+        shooterSubsystem.topRevMotor.set(0);
+        shooterSubsystem.bottomRevMotor.set(0);
     }
 }

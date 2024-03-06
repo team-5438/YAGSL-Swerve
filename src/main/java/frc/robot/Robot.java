@@ -4,20 +4,14 @@
 
 package frc.robot;
 
-import javax.management.InstanceAlreadyExistsException;
-
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AlignWithSpeaker;
-import frc.robot.commands.RevFeedWheels;
 import frc.robot.commands.RevShooterWheels;
 import frc.robot.commands.ShootCommand;
-import frc.robot.subsystems.LEDSubsystem;
 
 
 /**
@@ -57,7 +51,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    m_robotContainer.printToDashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

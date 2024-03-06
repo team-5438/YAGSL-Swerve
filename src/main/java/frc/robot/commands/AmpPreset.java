@@ -22,11 +22,8 @@ public class AmpPreset extends Command {
 
     @Override
     public void execute() {
-        double shooterSpeed = shooterSubsystem.pivotPIDControllerAuto.calculate(shooterSubsystem.fixEncoderAngle(shooterSubsystem.pivotEncoder.getPosition()), shooterAngle);
-        // double ampSpeed = -ampSubsystem.ampPivotPIDController.calculate(ampSubsystem.ampPivotEncoder.getPosition(), encoderSetPoint);
-        // sp += ampSubsystem.ampFeedforward.calculate(ampSubsystem.ampPivotEncoder.getPosition(), sp);
-        // ampSubsystem.ampPivotMotor.set(ampSpeed);
-        shooterSubsystem.speakerMotorPivot.set(shooterSpeed);
+        double shooterSpeed = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getPosition()), shooterAngle);
+        shooterSubsystem.pivotMotor.set(shooterSpeed);
     }
 
     public boolean isFinished() {
@@ -38,6 +35,6 @@ public class AmpPreset extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.speakerMotorPivot.set(0);
+        shooterSubsystem.pivotMotor.set(0);
     }
 }

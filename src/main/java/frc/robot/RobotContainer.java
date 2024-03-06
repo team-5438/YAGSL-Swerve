@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimShooter;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
@@ -30,13 +29,11 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
 import frc.robot.commands.AmpPivot;
-import frc.robot.commands.AmpPreset;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.RevShooterWheels;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 
 import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -63,7 +60,7 @@ public class RobotContainer {
 
   /* The container for the robot. Contains subsystems, OI devices, and commands. */
   private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, drivebase);
-  private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator, 0.1);
+  private final AimShooter aimShooter = new AimShooter(shooterSubsystem, limelightSubsystem, operator);
   private final AmpPivot ampPivot = new AmpPivot(ampSubsystem, shooterSubsystem, operator);
 
   public RobotContainer() {
@@ -74,7 +71,7 @@ public class RobotContainer {
         new InstantCommand(() -> shooterSubsystem.feedMotor.set(-0.21)),
         new WaitCommand(0.04),
         new InstantCommand(() -> shooterSubsystem.feedMotor.set(0)),
-        new InstantCommand(() -> shooterSubsystem.speakerMotorBottom.set(0)),
+        new InstantCommand(() -> shooterSubsystem.seakerMotorBottom.set(0)),
         new InstantCommand(() -> shooterSubsystem.speakerMotorTop.set(0))
         ))); */
     NamedCommands.registerCommand("Intake", new InstantCommand(() -> System.out.println("Intaking...")));
@@ -108,8 +105,8 @@ public class RobotContainer {
         new InstantCommand(() -> shooterSubsystem.feedMotor.set(-0.21)),
         new WaitCommand(0.04),
         new InstantCommand(() -> shooterSubsystem.feedMotor.set(0)),
-        new InstantCommand(() -> shooterSubsystem.speakerMotorBottom.set(0)),
-        new InstantCommand(() -> shooterSubsystem.speakerMotorTop.set(0))
+        new InstantCommand(() -> shooterSubsystem.bottomRevMotor.set(0)),
+        new InstantCommand(() -> shooterSubsystem.topRevMotor.set(0))
       )));
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem, intakeSubsystem).withTimeout(1));
 
@@ -135,7 +132,7 @@ public class RobotContainer {
       new InstantCommand(() -> feed.cancel())
     ));
     // comment out the following RevShooterWheels and sequential command to go back to L2 defualt shooting
-    RevShooterWheels shootSlow = new RevShooterWheels(shooterSubsystem, Constants.Shooter.shooterRevSpeed);
+    RevShooterWheels shootSlow = new RevShooterWheels(shooterSubsystem, Constants.Shooter.revSpeed);
     new JoystickButton(operator, PS4Controller.Button.kL2.value).onTrue(new SequentialCommandGroup(
       new InstantCommand(() -> shootSlow.schedule()),
       new WaitCommand(3),
@@ -166,11 +163,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     System.out.println("Running autonomous...");
     return drivebase.getAutonomousCommand("Sample 2", true);
-    // return null;
-  }
-
-  public void printToDashboard() {
-    SmartDashboard.putNumber("tx", limelightSubsystem.tx);
-    SmartDashboard.putNumber("ti", limelightSubsystem.tid);
   }
 }
