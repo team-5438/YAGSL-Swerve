@@ -28,11 +28,11 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public void execute() {
-        rotSpeed = rotationPID.calculate(limelightSubsystem.tx, 0.0) / 6;
+        rotSpeed = rotationPID.calculate(limelightSubsystem.tagOffsetX, 0.0) / 6;
         swerveSubsystem.drive(translationZero, -rotSpeed, false);
 		
 		// Set LEDs to orange while ALIGNING, green when ALIGNED
-		if(Math.abs(limelightSubsystem.tx) < alignedTolerance) {
+		if(Math.abs(limelightSubsystem.tagOffsetX) < alignedTolerance) {
 			LEDSubsystem.led0.setData(LEDCommand.setStripColor(27, 0, 255, 0));
 		} else {
 			LEDSubsystem.led0.setData(LEDCommand.setStripColor(27, 255, 165, 0));

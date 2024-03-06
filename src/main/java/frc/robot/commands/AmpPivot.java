@@ -27,9 +27,4 @@ public class AmpPivot extends Command {
         // sp -= ampSubsystem.ampFeedforward.calculate(ampSubsystem.ampPivotEncoder.getPosition(), sp);
         ampSubsystem.ampPivotMotor.set(sp);
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
 }

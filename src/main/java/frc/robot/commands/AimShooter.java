@@ -1,9 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -15,63 +12,54 @@ public class AimShooter extends Command {
     public ShooterSubsystem shooterSubsystem;
     public LimelightSubsystem limelightSubsystem;
     public PS4Controller operator;
-    public AddressableLEDBuffer lastLed;
-    public AddressableLEDBuffer led;
-    public double shootSpeed;
 
-    public AimShooter(ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem, PS4Controller operator, double shootSpeed) {
+    public AimShooter(ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem, PS4Controller operator) {
         this.addRequirements(shooterSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.limelightSubsystem = limelightSubsystem;
         this.operator = operator;
-        this.shootSpeed = shootSpeed;
     }
 
     @Override
     public void execute() {        
-        double distance = limelightSubsystem.tagDistance;
-        System.out.println("Encoder: " + shooterSubsystem.pivotEncoder.getPosition());
+        double speakerDistance = limelightSubsystem.tagDistanceIn;
 
-        if (distance != 0 && (limelightSubsystem.tid == Constants.AprilTags.SPEAKER_CENTRAL || limelightSubsystem.tid == Constants.AprilTags.SPEAKER_OFFSET)) {
+		// Only auto align if a tag is in sight and it's the correct tag
+        if (speakerDistance != 0 && limelightSubsystem.tagID == Constants.AprilTags.SPEAKER_CENTRAL) {
             double angle = 0.0;
-            /* encoder distance */
-            if(distance < 260) {
-                if (distance < 36) {
+            if(speakerDistance < 260) {
+                if (speakerDistance < 36) {
                     angle = 0.135;
-                } else if (distance > 36 && distance < 48) {
-                    angle = -0.0006334 * (distance - 48) + 0.129;
-                } else if (distance > 48 && distance < 133.914) {
-                    angle = 6.3 / distance;
-                } else if (distance > 133.914) {
-                    angle = -0.000105 * (distance - 264) + 0.035;
+                } else if (speakerDistance > 36 && speakerDistance < 48) {
+                    angle = -0.0006334 * (speakerDistance - 48) + 0.129;
+                } else if (speakerDistance > 48 && speakerDistance < 133.914) {
+                    angle = 6.3 / speakerDistance;
+                } else if (speakerDistance > 133.914) {
+                    angle = -0.000105 * (speakerDistance - 264) + 0.035;
                 }
                 angle -= 0.005;
+
+				// Rev shooter wheels when a note is loaded
                 if (shooterSubsystem.colorSensor.getProximity() > 150) {
-                    if (DriverStation.isAutonomous()) {
-                        shooterSubsystem.speakerMotorBottom.set(-1.0);
-                        shooterSubsystem.speakerMotorTop.set(1.0);
-                    } else {
-                        shooterSubsystem.speakerMotorBottom.set(-Constants.Shooter.shooterRevSpeed);
-                        shooterSubsystem.speakerMotorTop.set(Constants.Shooter.shooterRevSpeed);
-                    }
+					shooterSubsystem.bottomRevMotor.set(-Constants.Shooter.revSpeed);
+					shooterSubsystem.topRevMotor.set(Constants.Shooter.revSpeed);
                 } else {
-                    shooterSubsystem.speakerMotorBottom.set(0);
-                    shooterSubsystem.speakerMotorTop.set(0);
+                    shooterSubsystem.bottomRevMotor.set(0);
+                    shooterSubsystem.topRevMotor.set(0);
                 }
-                System.out.println("Angle: " + angle);
             } else {
-                System.out.println("HHHHHHHHHHHHHHHHHIIIIIIIII SAAGAR");
                 angle = 0.14;
             }
 
-            double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(
-                shooterSubsystem.fixEncoderAngle(shooterSubsystem.pivotEncoder.getPosition()), angle);
-            shooterSubsystem.speakerMotorPivot.set(sp * 10);
+			// PID to the calculated angle
+            double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getPosition()), angle);
+			shooterSubsystem.pivotMotor.set(sp * 10);
 
             if (shooterSubsystem.pivotEncoder.getPosition() < -0.14 && sp > 0) {
-                shooterSubsystem.speakerMotorPivot.set(0);
-            } else
-                shooterSubsystem.speakerMotorPivot.set(sp * 10);
+                shooterSubsystem.pivotMotor.set(0);
+            } else {
+				shooterSubsystem.pivotMotor.set(sp * 10);
+			}
 
             if (Math.abs(shooterSubsystem.pivotEncoder.getPosition() - angle) < 0.02) {
                 LEDSubsystem.setStrip("Shooter", LEDSubsystem.led0, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), 0, 255, 0));
@@ -79,21 +67,21 @@ public class AimShooter extends Command {
                 LEDSubsystem.setStrip("Shooter", LEDSubsystem.led0, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), 255, 255, 255));
             }
         } else {
-			// MANUAL AIMING / NON SHOOTER MODE controls for the shooter
+			// If a speaker central tag is not in sight rever to manual aiming
             double sp = MathUtil.applyDeadband(-operator.getRightY(), Constants.OperatorConstants.RIGHT_Y_DEADBAND);
-
-            // System.out.println("Encoder angle: " + shooterSubsystem.pivotEncoder.getPosition());
 
             sp = MathUtil.clamp(sp, -Constants.Shooter.manualPivotSpeedClamp, Constants.Shooter.manualPivotSpeedClamp);
 
+			// TODO: fix manual pivot feed forward
             // if(shooterSubsystem.pivotEncoder.getPosition() < -0.9) {
-                sp += shooterSubsystem.pivotFeedforward.calculate(shooterSubsystem.fixEncoderAngle(shooterSubsystem.pivotEncoder.getPosition()), sp, 0.2);
+                // sp += shooterSubsystem.pivotFeedforward.calculate(shooterSubsystem.fixEncoderAngle(shooterSubsystem.pivotEncoder.getPosition()), sp, 0.2);
             // }
-            shooterSubsystem.speakerMotorPivot.set(sp);
+			
+            shooterSubsystem.pivotMotor.set(sp);
         }
         if (shooterSubsystem.colorSensor.getProximity() < 150) {
-            shooterSubsystem.speakerMotorBottom.set(0);
-            shooterSubsystem.speakerMotorTop.set(0);
+            shooterSubsystem.bottomRevMotor.set(0);
+            shooterSubsystem.topRevMotor.set(0);
         }
     }
 }
