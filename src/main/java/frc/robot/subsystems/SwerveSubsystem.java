@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -50,14 +51,14 @@ public class SwerveSubsystem extends SubsystemBase {
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     // In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.428);
+    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286, 4);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO *
     // ENCODER RESOLUTION).
     // In this case the wheel diameter is 4 inches, which must be converted to
     // meters to get meters/second.
     // The gear ratio is 6.75 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.12);
+    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.12, 1);
     System.out.println("\"conversionFactor\": {");
     System.out.println("\t\"angle\": " + angleConversionFactor + ",");
     System.out.println("\t\"drive\": " + driveConversionFactor);
@@ -242,13 +243,13 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return Drive command.
    */
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
-      DoubleSupplier angularRotationX) {
+      DoubleSupplier angularRotationX, BooleanSupplier fieldOriented) {
     return run(() -> {
       swerveDrive.drive(
           new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
           Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
           Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
-          true,
+          fieldOriented.getAsBoolean(),
           false
         );
     });

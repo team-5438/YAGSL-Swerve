@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -85,12 +86,10 @@ public class RobotContainer {
     DoubleSupplier translationX = () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
     DoubleSupplier translationY = () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
     DoubleSupplier angularRotationX = () -> driver.getRawAxis(4) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
+    BooleanSupplier robotOriented = () -> driver.getLeftBumper();
 
-    Command driveFieldOrientedAnglularVelocity = new InstantCommand(() -> drivebase.drive(
-      new Translation2d(Math.pow(translationX.getAsDouble(), 3) * drivebase.swerveDrive.getMaximumVelocity(),
-        Math.pow(translationY.getAsDouble(), 3) * drivebase.swerveDrive.getMaximumVelocity()),
-      Math.pow(angularRotationX.getAsDouble(), 3) * drivebase.swerveDrive.getMaximumAngularVelocity(),
-      true), drivebase);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(translationX,
+        translationY, angularRotationX, robotOriented);
     // Switch for driveFieldOrientedDirectAngleSim if thats needed
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     ampSubsystem.setDefaultCommand(ampPivot);
