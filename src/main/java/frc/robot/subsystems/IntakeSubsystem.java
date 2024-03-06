@@ -8,8 +8,5 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
     public CANSparkMax intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorID, MotorType.kBrushless);;
-
-    public double getVoltage(CANSparkMax motor) {
-        return motor.getBusVoltage() * motor.getAppliedOutput();
-    }
+    // TODO: add second intake motor as a follower
 }
