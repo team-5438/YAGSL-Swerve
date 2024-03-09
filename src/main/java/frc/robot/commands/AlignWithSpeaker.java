@@ -27,6 +27,12 @@ public class AlignWithSpeaker extends Command {
     }
 
     @Override
+    public void initialize() {
+        LEDSubsystem.aquireLock("Align", LEDSubsystem.led0);
+        LEDSubsystem.setStrip("Align", LEDSubsystem.led0, LEDCommand.setStripColor(27, 255, 165, 0));
+    }
+
+    @Override
     public void execute() {
         rotSpeed = rotationPID.calculate(limelightSubsystem.tagOffsetX, 0.0) / 6;
         swerveSubsystem.drive(translationZero, -rotSpeed, false);
@@ -37,5 +43,10 @@ public class AlignWithSpeaker extends Command {
 		} else {
 			LEDSubsystem.led0.setData(LEDCommand.setStripColor(27, 255, 165, 0));
 		}
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        LEDSubsystem.releaseLock("Align", LEDSubsystem.led0);
     }
 }

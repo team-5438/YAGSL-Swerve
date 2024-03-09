@@ -8,7 +8,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class IntakeCommand extends Command{
     public ShooterSubsystem shooterSubsystem;
     public IntakeSubsystem intakeSubsystem;
-    public int[][] green = {{0, 255, 0, 100}, {0, 0, 0, 100},{0, 255, 0, 100},{0, 0, 0, 100},{0, 255, 0, 100}, {0, 0, 0, 0}};
+    public int[][] green = {{0, 255, 0, 100}, {0, 0, 0, 100},{0, 255, 0, 100},{0, 0, 0, 100},{0, 255, 0, 100}, {0, 0, 0, 0},{0, 255, 0, 100},{0,0,0,100},{0,255,0,100},{0,0,0,100},{0,255,0,100},{0,0,0,100}};
 
     public IntakeCommand(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;

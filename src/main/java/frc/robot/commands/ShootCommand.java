@@ -16,8 +16,8 @@ public class ShootCommand extends Command{
 
     @Override
     public void execute() {
-        shooterSubsystem.feedMotor.set(0.5);
-        intakeSubsystem.intakeMotor.set(0.90);
+        shooterSubsystem.feedMotor.set(0.9);
+        intakeSubsystem.intakeMotor.set(0.9);
     }
 
     @Override

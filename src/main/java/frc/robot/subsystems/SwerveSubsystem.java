@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -109,6 +110,8 @@ public class SwerveSubsystem extends SubsystemBase {
         // Default path replanning config. See the API for the options here
         ),
         () -> {
+          //TODO: Examine 222 boolean supplier
+
           // Boolean supplier that controls when the path will be mirrored for the red
           // alliance
           // This will flip the path being followed to the red side of the field.
@@ -178,6 +181,11 @@ public class SwerveSubsystem extends SubsystemBase {
         1.2
       );
 
+  }
+
+  public Command followAuto(String autoName)
+  {
+    return new PathPlannerAuto(autoName);
   }
 
   /**

@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.opencv.objdetect.ArucoDetector;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,12 +12,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 class LEDLock {
     String id;
     AddressableLED led;
+
+    public LEDLock(String id, AddressableLED led) {
+        this.id = id;
+        this.led = led;
+    }
 }
 
 public class LEDSubsystem extends SubsystemBase {
     public static AddressableLED led0;
     public static AddressableLEDBuffer led0Buffer;
-    public static ArrayList<LEDLock> locks;
+    public static ArrayList<LEDLock> locks = new ArrayList<LEDLock>();
 
     public LEDSubsystem() {
         led0 = new AddressableLED(0);
@@ -39,10 +46,8 @@ public class LEDSubsystem extends SubsystemBase {
         AddressableLEDBuffer ledBuffer) {
         String locked = isLocked(led);
 
-        if (locked != id || locked != null)
-            return;
-
-        led.setData(ledBuffer);
+        if (locked == id || locked == null)
+            led.setData(ledBuffer);
     }
 
     /**
@@ -57,8 +62,7 @@ public class LEDSubsystem extends SubsystemBase {
         if (isLocked(led) != null)
             return false;
 
-        locks.get(locks.size()).led = led;
-        locks.get(locks.size()).id = id;
+        locks.add(new LEDLock(id, led));
         return true;
     }
 

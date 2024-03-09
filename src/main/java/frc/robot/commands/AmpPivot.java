@@ -22,9 +22,6 @@ public class AmpPivot extends Command {
     @Override
     public void execute() {
         double sp = operator.getLeftY() / 5;
-
-        // System.out.println("Amp shooter: " + ampSubsystem.ampPivotEncoder.getPosition());
-        // sp -= ampSubsystem.ampFeedforward.calculate(ampSubsystem.ampPivotEncoder.getPosition(), sp);
         ampSubsystem.ampPivotMotor.set(sp);
     }
 }

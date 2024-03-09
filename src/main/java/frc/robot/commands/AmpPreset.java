@@ -22,13 +22,13 @@ public class AmpPreset extends Command {
 
     @Override
     public void execute() {
-        double shooterSpeed = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getPosition()), shooterAngle);
+        double shooterSpeed = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getDistance()), shooterAngle);
         shooterSubsystem.pivotMotor.set(shooterSpeed);
     }
 
     public boolean isFinished() {
         if(endAtAngle) {
-            return Math.abs(shooterAngle - -shooterSubsystem.pivotEncoder.getPosition()) < 0.01;
+            return Math.abs(shooterAngle - -shooterSubsystem.pivotEncoder.getDistance()) < 0.01;
         }
         return false;
     }
