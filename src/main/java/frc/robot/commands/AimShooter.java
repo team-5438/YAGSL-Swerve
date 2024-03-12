@@ -28,7 +28,7 @@ public class AimShooter extends Command {
 
     @Override
     public void execute() {        
-        System.out.println("Encoder angle: " + Math.abs(shooterSubsystem.pivotEncoder.getDistance()));
+        // System.out.println("Encoder angle: " + Math.abs(shooterSubsystem.pivotEncoder.getDistance()));
         // double speakerDistance = limelightSubsystem.tagDistanceIn;
         double speakerDistance = Units.metersToInches(photonSubsystem.distance);
 		// Only auto align if a tag is in sight and it's the correct tag
@@ -47,7 +47,7 @@ public class AimShooter extends Command {
                 } else if (speakerDistance > 133.914 + 2) {
                     angle = -0.000105 * (speakerDistance - 264) + 0.035;
                 }
-                angle += 0.005;
+                angle += 0.00;
 
 				// Rev shooter wheels when a note is loaded
                 if (shooterSubsystem.colorSensor.getProximity() > 150) {
@@ -62,8 +62,8 @@ public class AimShooter extends Command {
             }
 
 			// PID to the calculated angle
-            System.out.println("Desired angle: " + angle);
-            System.out.println("Speaker Distance " + speakerDistance);
+            // System.out.println("Desired angle: " + angle);
+            // System.out.println("Speaker Distance " + speakerDistance);
             double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getDistance()), angle);
 			shooterSubsystem.pivotMotor.set(sp * 10);
 
