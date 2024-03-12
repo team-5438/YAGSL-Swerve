@@ -82,9 +82,10 @@ public class RobotContainer {
     DoubleSupplier translationX = () -> MathUtil.applyDeadband(driver.getLeftY(), DriverConstants.LEFT_Y_DEADBAND) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
     DoubleSupplier translationY = () -> MathUtil.applyDeadband(driver.getLeftX(), DriverConstants.LEFT_X_DEADBAND) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
     DoubleSupplier angularRotationX = () -> driver.getRawAxis(4) / (driver.getRawAxis(XboxController.Axis.kLeftTrigger.value) + 1);
-    BooleanSupplier robotOriented = () -> !driver.getLeftBumper();
+    // BooleanSupplier robotOriented = () -> !driver.getLeftBumper();
+    BooleanSupplier fieldOriented = () -> true;
 
-    Command driveFieldOrientedAnglularVelocity = swerveSubsystem.driveCommand(translationX, translationY, angularRotationX, robotOriented);
+    Command driveFieldOrientedAnglularVelocity = swerveSubsystem.driveCommand(translationX, translationY, angularRotationX, fieldOriented);
     swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     ampSubsystem.setDefaultCommand(ampPivot);
     shooterSubsystem.setDefaultCommand(aimShooter);
