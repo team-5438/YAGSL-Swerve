@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.10938508324948,
-        "y": 5.515804013063092
+        "x": 5.0,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.476891485400403,
-        "y": 5.515804013063092
+        "x": 3.799121883958054,
+        "y": 7.857469429224573
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.095121197375063,
-        "y": 5.515804013063092
+        "x": 2.0,
+        "y": 5.0
       },
       "prevControl": {
-        "x": 14.008866676467052,
-        "y": 5.515804013063091
+        "x": 3.696505678725644,
+        "y": 2.4774483834681957
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,25 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake 1",
-      "waypointRelativePos": 0.35,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 1.5,
@@ -61,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Test Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
