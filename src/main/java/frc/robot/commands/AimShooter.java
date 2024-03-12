@@ -1,14 +1,14 @@
 package frc.robot.commands;
 
-import org.photonvision.proto.Photon;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -16,6 +16,7 @@ public class AimShooter extends Command {
     public ShooterSubsystem shooterSubsystem;
     // public LimelightSubsystem limelightSubsystem;
     public PhotonSubsystem photonSubsystem;
+    private PhotonTrackedTarget tag;
     public PS4Controller operator;
 
     public AimShooter(ShooterSubsystem shooterSubsystem, PhotonSubsystem photonSubsystem, PS4Controller operator) {
@@ -27,15 +28,18 @@ public class AimShooter extends Command {
     }
 
     @Override
-    public void execute() {        
-        // System.out.println("Encoder angle: " + Math.abs(shooterSubsystem.pivotEncoder.getDistance()));
+    public void execute() {
+        // Shuffleboard.getTab("Shooter").add("Encoder Angle", Math.abs(shooterSubsystem.pivotEncoder.getDistance()));
+        double speakerDistance = 0.0;
         // double speakerDistance = limelightSubsystem.tagDistanceIn;
-        double speakerDistance = Units.metersToInches(photonSubsystem.distance);
-		// Only auto align if a tag is in sight and it's the correct tag
-        // System.out.println("x: " + limelightSubsystem.cameraPoseTargetSpace[0] * 39.37);
-        // System.out.println("y: " + limelightSubsystem.cameraPoseTargetSpace[1] * 39.37);
-        // System.out.println("z: " + limelightSubsystem.cameraPoseTargetSpace[2] * 39.37);
-        if (speakerDistance != 0 /*&& photonSubsystem.tagID == Constants.AprilTags.SPEAKER_CENTRAL*/) {
+
+        // get the distance and figure out actual distance using pythagorian formula
+        if ((tag = photonSubsystem.getTag(Constants.AprilTags.SPEAKER_CENTRAL)) != null)
+            speakerDistance = Units.metersToInches(Math.abs(tag.getBestCameraToTarget().getX() - 1.592));
+        else
+            speakerDistance = 0;
+
+        if (speakerDistance != 0) {
             double angle = 0.0;
             if(speakerDistance < 260) {
                 if (speakerDistance < 36) {
@@ -62,8 +66,8 @@ public class AimShooter extends Command {
             }
 
 			// PID to the calculated angle
-            // System.out.println("Desired angle: " + angle);
-            // System.out.println("Speaker Distance " + speakerDistance);
+            // Shuffleboard.getTab("Shooter").add("Desired Angle", angle);
+            // Shuffleboard.getTab("Shooter").add("Speaker Distance", speakerDistance);
             double sp = shooterSubsystem.pivotPIDControllerAuto.calculate(Math.abs(shooterSubsystem.pivotEncoder.getDistance()), angle);
 			shooterSubsystem.pivotMotor.set(sp * 10);
 

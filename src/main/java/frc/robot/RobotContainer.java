@@ -59,7 +59,7 @@ public class RobotContainer {
   public final PS4Controller operator = new PS4Controller(Constants.OperatorConstants.id);
 
   /* The container for the robot. Contains subsystems, OI devices, and commands. */
-  private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(limelightSubsystem, swerveSubsystem);
+  private final AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(photonSubsystem, swerveSubsystem);
   private final AimShooter aimShooter = new AimShooter(shooterSubsystem, photonSubsystem, operator);
   private final AmpPivot ampPivot = new AmpPivot(ampSubsystem, shooterSubsystem, operator);
 

@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
         pivotMotor = new CANSparkMax(Constants.Shooter.pivotMotorID, MotorType.kBrushless);
         feedMotor = new CANSparkMax(Constants.Shooter.feedMotorID, MotorType.kBrushless);
 
-        pivotPIDControllerAuto = new PIDController(1.7, 0, 0.0);
+        pivotPIDControllerAuto = new PIDController(2, 0, 0.0);
         pivotPIDControllerAuto.enableContinuousInput(0, 1);
 
         pivotPIDControllerManual = new PIDController(0.1, 0, 0);
