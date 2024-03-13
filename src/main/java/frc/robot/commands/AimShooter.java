@@ -29,9 +29,7 @@ public class AimShooter extends Command {
 
     @Override
     public void execute() {
-        // Shuffleboard.getTab("Shooter").add("Encoder Angle", Math.abs(shooterSubsystem.pivotEncoder.getDistance()));
         double speakerDistance = 0.0;
-        // double speakerDistance = limelightSubsystem.tagDistanceIn;
 
         // get the distance and figure out actual distance using pythagorian formula
         if ((tag = photonSubsystem.getTag(Constants.AprilTags.SPEAKER_CENTRAL)) != null)

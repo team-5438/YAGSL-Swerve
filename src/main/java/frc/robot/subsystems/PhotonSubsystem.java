@@ -23,9 +23,9 @@ public class PhotonSubsystem extends SubsystemBase {
         }
     }
 
-    public PhotonTrackedTarget getTag(long speakerCentral) {
+    public PhotonTrackedTarget getTag(long tag) {
         for (PhotonTrackedTarget target : cameraImage.getTargets())
-            if (target.getFiducialId() == speakerCentral)
+            if (target.getFiducialId() == tag)
                 return target;
         return null;
     }

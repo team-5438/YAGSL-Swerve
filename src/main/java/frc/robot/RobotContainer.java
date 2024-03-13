@@ -25,7 +25,6 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.AmpSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AlignWithSpeaker;
@@ -48,7 +47,6 @@ import frc.robot.subsystems.ClimberSubsystem;
 public class RobotContainer {
   public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  public final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   public final PhotonSubsystem photonSubsystem = new PhotonSubsystem();
   public final AmpSubsystem ampSubsystem = new AmpSubsystem();
   public final LEDSubsystem ledSubsystem = new LEDSubsystem();
