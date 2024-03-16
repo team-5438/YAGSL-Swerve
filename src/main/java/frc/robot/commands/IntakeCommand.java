@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -18,7 +19,8 @@ public class IntakeCommand extends Command{
     @Override
     public void initialize() {
         LEDSubsystem.aquireLock("Intake", LEDSubsystem.led0);
-        LEDSubsystem.setStrip("Intake", LEDSubsystem.led0, LEDCommand.setStripColor(27, 255, 200, 0));
+        LEDSubsystem.setStrip("Intake", LEDSubsystem.led0, LEDCommand.setStripColor(LEDSubsystem.led0Buffer.getLength(), 255, 200, 0));
+        SmartDashboard.putBoolean("Intake", false);
     }
 
     @Override
@@ -33,6 +35,7 @@ public class IntakeCommand extends Command{
         // TODO: if 15 seconds has passed and there is no input end the command
         if (shooterSubsystem.colorSensor.getProximity() > 150) {
             /* we've detected the note! now end the command */
+            SmartDashboard.putBoolean("Intake", true);
             new FlashLEDS("Intake", LEDSubsystem.led0, green);
             return true;
         }

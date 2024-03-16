@@ -42,6 +42,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public final SwerveDrive swerveDrive;
   /* Maximum speed of the robot in meters per second, used to limit acceleration. */
   public double maximumSpeed = Units.feetToMeters(16.6);
+  public boolean aligned = false;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -98,15 +99,15 @@ public class SwerveSubsystem extends SubsystemBase {
         this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(0.1, 0.0, 0.71),
+            new PIDConstants(5.0, 0.0, 0),
             // Translation PID constants
-            new PIDConstants(0.0, 0.0, 0.0),
+            new PIDConstants(0.1, 0.0, 0.0),
             // Rotation PID constants
             maximumSpeed,
             // Max module speed, in m/s
             swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
             // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig()
+            new ReplanningConfig(false, false)
         // Default path replanning config. See the API for the options here
         ),
         () -> {
@@ -117,7 +118,7 @@ public class SwerveSubsystem extends SubsystemBase {
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
           var alliance = DriverStation.getAlliance();
-          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+          return alliance.get() == DriverStation.Alliance.Red;
         },
         this // Reference to this subsystem to set requirements
     );
@@ -142,6 +143,10 @@ public class SwerveSubsystem extends SubsystemBase {
     // event markers.
     PathPlannerLogging.logActivePath(path);
     return AutoBuilder.followPath(path);
+  }
+
+  public Command getAutoRoutine(String pathName) {
+    return new PathPlannerAuto(pathName);
   }
 
   /**
@@ -252,14 +257,25 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
       DoubleSupplier angularRotationX, BooleanSupplier fieldOriented) {
+    // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction
     return run(() -> {
-      swerveDrive.drive(
-          new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
-          Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
-          Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
-          fieldOriented.getAsBoolean(),
-          false
-        );
+      if (fieldOriented.getAsBoolean()) {
+        swerveDrive.drive(
+            new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
+            Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+            Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
+            true,
+            false
+          );
+      } else {
+        swerveDrive.drive(
+            new Translation2d(-Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
+            -Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
+            Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
+            false,
+            false
+          );
+      }
     });
   }
 

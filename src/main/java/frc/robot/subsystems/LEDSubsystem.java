@@ -26,7 +26,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem() {
         led0 = new AddressableLED(0);
-        led0Buffer = new AddressableLEDBuffer(27);
+        led0Buffer = new AddressableLEDBuffer(25);
 
         led0.setLength(led0Buffer.getLength());
 
@@ -100,5 +100,13 @@ public class LEDSubsystem extends SubsystemBase {
                 return locks.get(i).id;
 
         return null;
+    }
+
+    public static void forceUnlock(AddressableLED led) {
+        int i;
+
+        for (i = 0; i < locks.size(); i++)
+            if (locks.get(i).led == led)
+                locks.remove(i);
     }
 }

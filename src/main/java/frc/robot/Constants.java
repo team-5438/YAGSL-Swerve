@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
 
@@ -24,7 +26,9 @@ import swervelib.parser.PIDFConfig;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
   public static class Shooter {
+
 	// Motor IDS
     public static final int topRevMotorID = 8;
     public static final int bottomRevMotorID = 9;

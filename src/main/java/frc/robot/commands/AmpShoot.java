@@ -22,6 +22,7 @@ public class AmpShoot extends Command {
             shooterSubsystem.topRevMotor.set(0.2);
             shooterSubsystem.bottomRevMotor.set(-0.2);
         }
+        shooterSubsystem.feedMotor.set(0.9);
     }
 
     @Override
@@ -29,5 +30,6 @@ public class AmpShoot extends Command {
         ampSubsystem.ampShootMotor.set(0);
         shooterSubsystem.topRevMotor.set(0);
         shooterSubsystem.bottomRevMotor.set(0);
+        shooterSubsystem.feedMotor.set(0);
     }
 }

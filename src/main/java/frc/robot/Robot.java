@@ -4,15 +4,21 @@
 
 package frc.robot;
 
+import java.time.Instant;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.commands.RevShooterWheels;
 import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.LEDSubsystem;
 
 
 /**
@@ -65,17 +71,19 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    //m_robotContainer.
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)+
      if (m_autonomousCommand != null) {
        new SequentialCommandGroup(
-        new InstantCommand(m_robotContainer.swerveSubsystem::zeroGyro),
-        new WaitCommand(2.5),
-        new RevShooterWheels(m_robotContainer.shooterSubsystem, 0.0).withTimeout(1.0),
-        new ShootCommand(m_robotContainer.shooterSubsystem, m_robotContainer.intakeSubsystem).withTimeout(1.0),
-        new WaitCommand(7.0),
-        m_autonomousCommand
+        new InstantCommand(() -> m_robotContainer.swerveSubsystem.zeroGyro()),
+        // new WaitCommand(2.5),
+        // new RevShooterWheels(m_robotContainer.shooterSubsystem, 0.0).withTimeout(1.0),
+        // new WaitCommand(1),
+        // new ShootCommand(m_robotContainer.shooterSubsystem, m_robotContainer.intakeSubsystem).withTimeout(1.0),
+        // new WaitCommand(7.0),
+        m_autonomousCommand,
+        new InstantCommand(() -> m_robotContainer.intakeSubsystem.intakeMotor.set(0))
       ).schedule();
 
     } 
@@ -83,7 +91,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    m_robotContainer.intakeSubsystem.intakeMotor.set(1);
+  }
 
   @Override
   public void teleopInit() {

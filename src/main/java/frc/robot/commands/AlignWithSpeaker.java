@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AlignWithSpeaker extends Command {
@@ -29,7 +30,7 @@ public class AlignWithSpeaker extends Command {
         this.swerveSubsystem = swerveSubsystem;
         translationZero = new Translation2d(0, 0);
         rotationPID = new PIDController(0.5, 0.0, 0.0);
-		alignedTolerance = 2.5;
+		alignedTolerance = 7.5; // degrese
     }
 
     @Override
@@ -40,17 +41,21 @@ public class AlignWithSpeaker extends Command {
 
     @Override
     public void execute() {
-        if ((tag = photonSubsystem.getTag(Constants.AprilTags.SPEAKER_CENTRAL)) != null) {
+        tag = photonSubsystem.getTag(Constants.AprilTags.SPEAKER_CENTRAL);
+        if (tag != null)
             rotSpeed = rotationPID.calculate(tag.getYaw(), 0.0) / 6;
-        }
+        else
+            return;
         swerveSubsystem.drive(translationZero, -rotSpeed, false);
 		
 		// Set LEDs to orange while ALIGNING, green when ALIGNED
 		if (Math.abs(tag.getYaw()) < alignedTolerance) {
-			LEDSubsystem.setStrip("Align", LEDSubsystem.led0, LEDCommand.setStripColor(27, 0, 255, 0));
+            swerveSubsystem.aligned = true;
 		} else {
-			LEDSubsystem.setStrip("Align", LEDSubsystem.led0, LEDCommand.setStripColor(27, 255, 165, 0));
+            swerveSubsystem.aligned = false;
 		}
+        // System.out.println("Yaw: " + tag.getYaw());
+        // System.out.println(swerveSubsystem.aligned);
     }
 
     @Override
