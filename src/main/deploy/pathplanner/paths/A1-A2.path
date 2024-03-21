@@ -20,8 +20,8 @@
         "y": 5.7
       },
       "prevControl": {
-        "x": 2.269125529767173,
-        "y": 6.095676997860344
+        "x": 2.0670466967405035,
+        "y": 5.829445381805382
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,8 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -30.0,
-    "rotateFast": false
+    "rotation": -23.0,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "fedorapaths",
