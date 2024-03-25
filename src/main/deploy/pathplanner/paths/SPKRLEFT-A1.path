@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.701184499354663,
-        "y": 6.7
+        "x": 0.8721945710174982,
+        "y": 7.169846310392955
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.55,
+        "x": 2.75,
         "y": 7.0
       },
       "prevControl": {
-        "x": 1.6103073792140916,
-        "y": 6.657979856674332
+        "x": 1.75,
+        "y": 7.0
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,14 +33,14 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 90.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "fedorapaths",

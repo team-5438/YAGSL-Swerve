@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.75,
-        "y": 7.0
+        "x": 0.6,
+        "y": 2.17
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7791033935464338,
-        "y": 6.290822781502472
+        "x": 2.6500125492607887,
+        "y": 1.7796807714832776
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.75,
-        "y": 5.61
+        "x": 7.95,
+        "y": 0.77
       },
       "prevControl": {
-        "x": 1.977259338968745,
-        "y": 5.817055236082017
+        "x": 5.715044945282516,
+        "y": 1.1955319963975026
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -23.0,
-    "rotateFast": true
+    "rotation": 0,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "fedorapaths",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

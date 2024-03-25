@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7011844993546638,
-      "y": 6.7
+      "x": 1.55,
+      "y": 5.55
     },
-    "rotation": 60.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A1"
+            "pathName": "SPKRMID-A1"
           }
         },
         {
@@ -38,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1-A2"
+            "pathName": "SPKRMID-A1-A2"
           }
         },
         {
@@ -56,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPKRLEFT-A2-A3"
+            "pathName": "SPKRMID-A2-A3"
           }
         },
         {
@@ -75,6 +81,12 @@
           "type": "path",
           "data": {
             "pathName": "A3-B3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -99,12 +111,6 @@
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPKRFRNT-B2"
           }
         }
       ]
